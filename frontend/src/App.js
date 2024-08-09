@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import WishList from './components/WishList'
 import { getWishes } from './api/WishService'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 function App () {
   const [data, setData] = useState({})
@@ -22,9 +24,12 @@ function App () {
   }, [])
 
   return (
-    <div>
-      <h1>Hello!</h1>
-    </div>
+    <>
+      <Routes>
+        <Route path='/' element={<Navigate to='/wishes' />} />
+        <Route path='/wishes' element={<WishList data={data} getAllWishes={getAllWishes} />} />
+      </Routes>
+    </>
   )
 }
 
