@@ -1,6 +1,6 @@
 package io.aanagtalon.backend.service;
 
-import io.aanagtalon.backend.domain.Wish;
+import io.aanagtalon.backend.entity.WishEntity;
 import io.aanagtalon.backend.repo.WishRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,28 +29,28 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class WishService {
     private final WishRepo wishRepo;
 
-    public Page<Wish> getAllWishes(int page, int size) {
+    public Page<WishEntity> getAllWishes(int page, int size) {
         return wishRepo.findAll(PageRequest.of(page, size, Sort.by("id")));
     }
 
-    public Wish getWish(String id) {
+    public WishEntity getWish(String id) {
         return wishRepo.findById(id).orElseThrow(() -> new RuntimeException("Contact not found"));
     }
 
-    public Wish createWish(Wish wish) {
-        return wishRepo.save(wish);
+    public WishEntity createWish(WishEntity wishEntity) {
+        return wishRepo.save(wishEntity);
     }
 
-    public void deleteWish(Wish wish) {
+    public void deleteWish(WishEntity wishEntity) {
         // ADD LATER
     }
 
     public String uploadPhoto(String id, MultipartFile file) {
         log.info("Saving photo for wish ID: {}", id);
-        Wish wish = getWish(id);
+        WishEntity wishEntity = getWish(id);
         String photoUrl = photoFunction.apply(id, file);
-        wish.setPhotoUrl(photoUrl);
-        wishRepo.save(wish);
+        wishEntity.setPhotoUrl(photoUrl);
+        wishRepo.save(wishEntity);
         return photoUrl;
     }
 

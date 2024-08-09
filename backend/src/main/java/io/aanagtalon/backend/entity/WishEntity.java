@@ -1,4 +1,4 @@
-package io.aanagtalon.backend.domain;
+package io.aanagtalon.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
@@ -18,7 +18,7 @@ import org.hibernate.annotations.UuidGenerator;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Table(name = "wishes")
-public class Wish {
+public class WishEntity {
 
     @Id
     @UuidGenerator

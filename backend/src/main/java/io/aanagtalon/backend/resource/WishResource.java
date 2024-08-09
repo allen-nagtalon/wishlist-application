@@ -1,6 +1,6 @@
 package io.aanagtalon.backend.resource;
 
-import io.aanagtalon.backend.domain.Wish;
+import io.aanagtalon.backend.entity.WishEntity;
 import io.aanagtalon.backend.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,18 +24,18 @@ public class WishResource {
     private final WishService wishService;
 
     @PostMapping
-    public ResponseEntity<Wish> createWish(@RequestBody Wish wish) {
-        return ResponseEntity.created(URI.create("/wishes/id")).body(wishService.createWish(wish));
+    public ResponseEntity<WishEntity> createWish(@RequestBody WishEntity wishEntity) {
+        return ResponseEntity.created(URI.create("/wishes/id")).body(wishService.createWish(wishEntity));
     }
 
     @GetMapping
-    public ResponseEntity<Page<Wish>> getContacts(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                  @RequestParam(value = "size", defaultValue = "10") int size) {
+    public ResponseEntity<Page<WishEntity>> getContacts(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                        @RequestParam(value = "size", defaultValue = "10") int size) {
         return ResponseEntity.ok().body(wishService.getAllWishes(page, size));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Wish> getWish(@PathVariable(value = "id") String id) {
+    public ResponseEntity<WishEntity> getWish(@PathVariable(value = "id") String id) {
         return ResponseEntity.ok().body(wishService.getWish(id));
     }
 
