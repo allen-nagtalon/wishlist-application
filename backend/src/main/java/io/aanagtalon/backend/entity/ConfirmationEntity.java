@@ -17,7 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "confirmations")
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class ConfirmationEntity {
+public class ConfirmationEntity extends Auditable {
     private String key;
 
     @OneToOne(targetEntity = UserEntity.class, fetch = FetchType.EAGER)

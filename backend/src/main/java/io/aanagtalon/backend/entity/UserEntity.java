@@ -15,7 +15,7 @@ import lombok.*;
 @Entity
 @Table(name = "users")
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class UserEntity {
+public class UserEntity extends Auditable {
     @Column(updatable = false, unique = true, nullable = false)
     private String userId;
 
