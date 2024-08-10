@@ -1,7 +1,7 @@
 import React from 'react'
 import Wish from './Wish'
 
-const WishList = ({ data, currentPage, getAllWishes }) => {
+const WishList = ({ data, getAllWishes }) => {
   return (
     <main className='main'>
       {data?.content?.length === 0 && <div>Empty List! Please add a wish!</div>}
