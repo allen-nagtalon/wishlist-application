@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:8080/wishes'
+const API_URL = 'http://localhost:8085/wishes'
 
 export async function saveWish (wish) {
   return await axios.post(API_URL, wish)
