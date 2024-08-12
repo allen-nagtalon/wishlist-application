@@ -3,6 +3,7 @@ package io.aanagtalon.backend.service.impl;
 import io.aanagtalon.backend.entity.ConfirmationEntity;
 import io.aanagtalon.backend.entity.CredentialEntity;
 import io.aanagtalon.backend.entity.UserEntity;
+import io.aanagtalon.backend.entity.exception.ApiException;
 import io.aanagtalon.backend.enumeration.EventType;
 import io.aanagtalon.backend.event.UserEvent;
 import io.aanagtalon.backend.repo.ConfirmationRepo;
@@ -38,5 +39,23 @@ public class UserServiceImpl implements UserService {
         var confirmationEntity = new ConfirmationEntity(userEntity);
         confirmationRepo.save(confirmationEntity);
         publisher.publishEvent(new UserEvent(userEntity, EventType.REGISTRATION, Map.of("key", confirmationEntity.getKey())));
+    }
+
+    @Override
+    public void verifyAccountKey(String key) {
+        var confirmationEntity = (ConfirmationEntity) getUserConfirmation(key);
+        var userEntity = getUserEntityByEmail(confirmationEntity.getUserEntity().getEmail());
+        userEntity.setEnabled(true);
+        userRepo.save(userEntity);
+        confirmationRepo.delete(confirmationEntity);
+    }
+
+    private UserEntity getUserEntityByEmail(String email) {
+        var userByEmail = userRepo.findByEmailIgnoreCase(email);
+        return userByEmail.orElseThrow(() -> new ApiException("User not found"));
+    }
+
+    private ConfirmationEntity getUserConfirmation(String key) {
+        return confirmationRepo.findByKey(key).orElseThrow(() -> new ApiException("Confirmation key not found"));
     }
 }
