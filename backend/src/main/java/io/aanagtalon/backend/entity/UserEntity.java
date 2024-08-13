@@ -28,4 +28,5 @@ public class UserEntity extends Auditable {
     private String imageUrl;
     private boolean accountNonLocked;
     private boolean enabled;
+    private int loginAttempts;
 }

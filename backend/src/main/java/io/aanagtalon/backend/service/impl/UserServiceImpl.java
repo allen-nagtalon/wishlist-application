@@ -1,10 +1,12 @@
 package io.aanagtalon.backend.service.impl;
 
+import io.aanagtalon.backend.cache.CacheStore;
 import io.aanagtalon.backend.entity.ConfirmationEntity;
 import io.aanagtalon.backend.entity.CredentialEntity;
 import io.aanagtalon.backend.entity.UserEntity;
-import io.aanagtalon.backend.entity.exception.ApiException;
+import io.aanagtalon.backend.entity.exception.WishlistException;
 import io.aanagtalon.backend.enumeration.EventType;
+import io.aanagtalon.backend.enumeration.LoginType;
 import io.aanagtalon.backend.event.UserEvent;
 import io.aanagtalon.backend.repo.ConfirmationRepo;
 import io.aanagtalon.backend.repo.CredentialRepo;
@@ -29,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final CredentialRepo credentialRepo;
     private final ConfirmationRepo confirmationRepo;
     //private final BCryptPasswordEncoder encoder;
+    private final CacheStore<String, Integer> userCache;
     private final ApplicationEventPublisher publisher;
 
     @Override
@@ -50,12 +53,36 @@ public class UserServiceImpl implements UserService {
         confirmationRepo.delete(confirmationEntity);
     }
 
+    @Override
+    public void updateLoginAttempt(String email, LoginType loginType) {
+        var userEntity = getUserEntityByEmail(email);
+        switch(loginType) {
+            case LOGIN_ATTEMPT -> {
+                if(userCache.get(userEntity.getEmail()) == null) {
+                    userEntity.setLoginAttempts(0);
+                    userEntity.setAccountNonLocked(true);
+                }
+                userEntity.setLoginAttempts(userEntity.getLoginAttempts() + 1);
+                userCache.put(userEntity.getEmail(), userEntity.getLoginAttempts());
+                if (userCache.get(userEntity.getEmail()) > 5) {
+                    userEntity.setAccountNonLocked(false);
+                }
+            }
+            case LOGIN_SUCCESS -> {
+                userEntity.setAccountNonLocked(true);
+                userEntity.setLoginAttempts(0);
+                userCache.evict(userEntity.getEmail());
+            }
+        }
+        userRepo.save(userEntity);
+    }
+
     private UserEntity getUserEntityByEmail(String email) {
         var userByEmail = userRepo.findByEmailIgnoreCase(email);
-        return userByEmail.orElseThrow(() -> new ApiException("User not found"));
+        return userByEmail.orElseThrow(() -> new WishlistException("User not found"));
     }
 
     private ConfirmationEntity getUserConfirmation(String key) {
-        return confirmationRepo.findByKey(key).orElseThrow(() -> new ApiException("Confirmation key not found"));
+        return confirmationRepo.findByKey(key).orElseThrow(() -> new WishlistException("Confirmation key not found"));
     }
 }
