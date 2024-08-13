@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import static io.aanagtalon.backend.constant.Constant.NEW_USER_ACCOUNT_VERIFICATION;
+import static io.aanagtalon.backend.constant.Constants.NEW_USER_ACCOUNT_VERIFICATION;
 import static io.aanagtalon.backend.utils.EmailUtils.getEmailMessage;
 
 @Service
