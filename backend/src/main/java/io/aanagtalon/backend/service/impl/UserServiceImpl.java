@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static io.aanagtalon.backend.utils.UserUtils.createNewEntity;
+import static io.aanagtalon.backend.utils.UserUtils.fromUserEntity;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -80,7 +81,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUserId(String userId) {
-        return null;
+        var userEntity = userRepo.findUserByUserId(userId).orElseThrow(() -> new WishlistException("User not found"));
+        return fromUserEntity(userEntity, getUserCredentialById(userEntity.getId()));
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        UserEntity userEntity = getUserEntityByEmail(email);
+        return fromUserEntity(userEntity, getUserCredentialById(userEntity.getId()));
+    }
+
+    @Override
+    public CredentialEntity getUserCredentialById(Long userId) {
+        var credentialById = credentialRepo.getCredentialByUserEntityId(userId);
+        return credentialById.orElseThrow(() -> new WishlistException("Unable to find user credential"));
     }
 
     private UserEntity getUserEntityByEmail(String email) {
