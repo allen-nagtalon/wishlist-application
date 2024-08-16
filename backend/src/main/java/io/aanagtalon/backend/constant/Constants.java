@@ -14,4 +14,6 @@ public class Constants {
     public static final String PEACHY_SWEET_CODE_LLC = "PEACHY_SWEET_CODE_LLC";
 
     public static final String LOGIN_PATH = "/user/login";
+
+    public static final int PASSWORD_STRENGTH = 12;
 }
