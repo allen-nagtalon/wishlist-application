@@ -1,6 +1,7 @@
 package io.aanagtalon.backend.service.impl;
 
 import io.aanagtalon.backend.cache.CacheStore;
+import io.aanagtalon.backend.dto.User;
 import io.aanagtalon.backend.entity.ConfirmationEntity;
 import io.aanagtalon.backend.entity.CredentialEntity;
 import io.aanagtalon.backend.entity.UserEntity;
@@ -75,6 +76,11 @@ public class UserServiceImpl implements UserService {
             }
         }
         userRepo.save(userEntity);
+    }
+
+    @Override
+    public User getUserByUserId(String userId) {
+        return null;
     }
 
     private UserEntity getUserEntityByEmail(String email) {
