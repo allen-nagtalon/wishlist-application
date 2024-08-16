@@ -12,4 +12,6 @@ public class Constants {
     public static final String TYPE = "typ";
     public static final String JWT_TYPE = "JWT";
     public static final String PEACHY_SWEET_CODE_LLC = "PEACHY_SWEET_CODE_LLC";
+
+    public static final String LOGIN_PATH = "/user/login";
 }

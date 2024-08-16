@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import static com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT;
+import static io.aanagtalon.backend.constant.Constants.LOGIN_PATH;
 import static io.aanagtalon.backend.domain.WishlistAuthentication.unauthenticated;
 import static io.aanagtalon.backend.utils.RequestUtils.getResponse;
 import static io.aanagtalon.backend.utils.RequestUtils.handleErrorResponse;
@@ -35,7 +36,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
     private final JwtService jwtService;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, JwtService jwtService) {
-        super(new AntPathRequestMatcher("/user/login", POST.name()),authenticationManager);
+        super(new AntPathRequestMatcher(LOGIN_PATH, POST.name()),authenticationManager);
         this.userService = userService;
         this.jwtService = jwtService;
     }
