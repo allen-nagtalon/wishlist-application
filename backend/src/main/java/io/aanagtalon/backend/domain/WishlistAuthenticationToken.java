@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import java.util.Collection;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
-public class WishlistAuthentication extends AbstractAuthenticationToken {
+public class WishlistAuthenticationToken extends AbstractAuthenticationToken {
     private static final String PASSWORD_PROTECTED = "[PASSWORD PROTECTED]";
     private static final String EMAIL_PROTECTED = "[EMAIL PROTECTED]";
     private User user;
@@ -17,14 +17,14 @@ public class WishlistAuthentication extends AbstractAuthenticationToken {
     private String password;
     private boolean authenticated;
 
-    private WishlistAuthentication(String email, String password) {
+    private WishlistAuthenticationToken(String email, String password) {
         super(AuthorityUtils.NO_AUTHORITIES);
         this.email = email;
         this.password = password;
         this.authenticated = false;
     }
 
-    private WishlistAuthentication(User user, Collection<? extends GrantedAuthority> authorities) {
+    private WishlistAuthenticationToken(User user, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.user = user;
         this.password = PASSWORD_PROTECTED;
@@ -32,12 +32,12 @@ public class WishlistAuthentication extends AbstractAuthenticationToken {
         this.authenticated = true;
     }
 
-    public static WishlistAuthentication unauthenticated(String email, String password) {
-        return new WishlistAuthentication(email, password);
+    public static WishlistAuthenticationToken unauthenticated(String email, String password) {
+        return new WishlistAuthenticationToken(email, password);
     }
 
-    public static WishlistAuthentication authenticated(User user, Collection<? extends GrantedAuthority> authorities) {
-        return new WishlistAuthentication(user, authorities);
+    public static WishlistAuthenticationToken authenticated(User user, Collection<? extends GrantedAuthority> authorities) {
+        return new WishlistAuthenticationToken(user, authorities);
     }
 
     @Override

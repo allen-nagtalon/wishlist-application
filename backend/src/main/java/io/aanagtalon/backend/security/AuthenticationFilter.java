@@ -25,7 +25,7 @@ import java.util.Map;
 
 import static com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT;
 import static io.aanagtalon.backend.constant.Constants.LOGIN_PATH;
-import static io.aanagtalon.backend.domain.WishlistAuthentication.unauthenticated;
+import static io.aanagtalon.backend.domain.WishlistAuthenticationToken.unauthenticated;
 import static io.aanagtalon.backend.utils.RequestUtils.getResponse;
 import static io.aanagtalon.backend.utils.RequestUtils.handleErrorResponse;
 import static javax.swing.text.html.FormSubmitEvent.MethodType.POST;

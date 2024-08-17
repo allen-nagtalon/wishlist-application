@@ -1,7 +1,7 @@
 package io.aanagtalon.backend.security;
 
 import io.aanagtalon.backend.domain.UserPrincipal;
-import io.aanagtalon.backend.domain.WishlistAuthentication;
+import io.aanagtalon.backend.domain.WishlistAuthenticationToken;
 import io.aanagtalon.backend.entity.exception.WishlistException;
 import io.aanagtalon.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static io.aanagtalon.backend.domain.WishlistAuthentication.*;
+import static io.aanagtalon.backend.domain.WishlistAuthenticationToken.*;
 
 @Component
 @RequiredArgsConstructor
@@ -41,10 +41,10 @@ public class WishlistAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return WishlistAuthentication.class.isAssignableFrom(authentication);
+        return WishlistAuthenticationToken.class.isAssignableFrom(authentication);
     }
 
-    private final Function<Authentication, WishlistAuthentication> authenticationFunction = authentication -> (WishlistAuthentication) authentication;
+    private final Function<Authentication, WishlistAuthenticationToken> authenticationFunction = authentication -> (WishlistAuthenticationToken) authentication;
 
     private final Consumer<UserPrincipal> validAccount = userPrincipal -> {
         if(userPrincipal.isAccountNonLocked()) { throw new LockedException("Your account is currently locked"); }
