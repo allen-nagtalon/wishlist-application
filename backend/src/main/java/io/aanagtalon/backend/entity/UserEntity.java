@@ -1,5 +1,6 @@
 package io.aanagtalon.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,5 +31,6 @@ public class UserEntity extends Auditable {
     private boolean enabled;
 
     @OneToMany(mappedBy = "owner")
+    @JsonIgnore
     private Set<WishlistEntity> wishlists;
 }
