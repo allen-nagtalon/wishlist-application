@@ -1,10 +1,10 @@
 package io.aanagtalon.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,4 +28,7 @@ public class UserEntity extends Auditable {
     private String imageUrl;
     private boolean accountNonLocked;
     private boolean enabled;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<WishlistEntity> wishlists;
 }

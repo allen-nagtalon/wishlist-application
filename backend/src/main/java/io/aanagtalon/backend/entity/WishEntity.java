@@ -1,15 +1,14 @@
 package io.aanagtalon.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
+
+import java.util.Set;
 
 @Entity
 @Getter
@@ -18,15 +17,13 @@ import org.hibernate.annotations.UuidGenerator;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Table(name = "wishes")
-public class WishEntity {
-
-    @Id
-    @UuidGenerator
-    @Column(name = "id", unique = true, updatable = false)
-    private String id;
+public class WishEntity extends Auditable {
 
     private String title;
     private String description;
     private String url;
     private String photoUrl;
+
+    @ManyToMany(mappedBy = "wishes")
+    private Set<WishlistEntity> wishlists;
 }
