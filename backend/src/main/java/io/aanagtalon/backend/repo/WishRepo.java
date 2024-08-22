@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface WishRepo extends JpaRepository<WishEntity, String> {
+public interface WishRepo extends JpaRepository<WishEntity, Long> {
     Optional<WishEntity> findById(Long id);
     Optional<WishEntity> findByWishlists_Id(Long id);
 }

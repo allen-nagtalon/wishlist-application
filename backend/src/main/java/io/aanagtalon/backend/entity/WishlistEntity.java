@@ -1,5 +1,6 @@
 package io.aanagtalon.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,7 +29,7 @@ public class WishlistEntity extends Auditable {
                     name = "user_id", referencedColumnName = "id"))
     private UserEntity owner;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JoinTable(
             name = "wishlist_items",
             joinColumns = @JoinColumn(name = "wishlist_id", referencedColumnName = "id"),
@@ -39,5 +40,9 @@ public class WishlistEntity extends Auditable {
     public WishlistEntity(String title, UserEntity owner) {
         this.title = title;
         this.owner = owner;
+    }
+
+    public void addWishToWishlist(WishEntity wish) {
+        wishes.add(wish);
     }
 }

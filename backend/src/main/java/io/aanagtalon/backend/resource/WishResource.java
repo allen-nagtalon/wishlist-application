@@ -1,7 +1,9 @@
 package io.aanagtalon.backend.resource;
 
+import io.aanagtalon.backend.dto.WishRequest;
 import io.aanagtalon.backend.entity.WishEntity;
 import io.aanagtalon.backend.service.WishService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,9 @@ public class WishResource {
     private final WishService wishService;
 
     @PostMapping
-    public ResponseEntity<WishEntity> createWish(@RequestBody WishEntity wishEntity) {
-        return ResponseEntity.created(URI.create("/wishes/id")).body(wishService.createWish(wishEntity));
+    public ResponseEntity<WishEntity> createWish(@ModelAttribute WishRequest request) {
+        var wish = wishService.createWish(request.getTitle(), request.getDescription(), request.getUrl(), request.getWishlistId(), request.getFile());
+        return ResponseEntity.created(URI.create("/wishes/id")).body(wish);
     }
 
     @GetMapping
@@ -35,12 +38,12 @@ public class WishResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WishEntity> getWish(@PathVariable(value = "id") String id) {
+    public ResponseEntity<WishEntity> getWish(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok().body(wishService.getWish(id));
     }
 
     @PutMapping("/photo")
-    public ResponseEntity<String> uploadPhoto(@RequestParam("id") String id, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadPhoto(@RequestParam("id") Long id, @RequestParam("file") MultipartFile file) {
         return ResponseEntity.ok().body(wishService.uploadPhoto(id, file));
     }
 

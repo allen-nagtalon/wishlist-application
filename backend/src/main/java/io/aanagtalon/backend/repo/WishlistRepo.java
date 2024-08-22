@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface WishlistRepo extends JpaRepository<WishlistEntity, String> {
+public interface WishlistRepo extends JpaRepository<WishlistEntity, Long> {
     Optional<WishlistEntity> findByOwner_Id(Long id);
 }
