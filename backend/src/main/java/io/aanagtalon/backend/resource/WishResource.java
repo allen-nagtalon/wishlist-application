@@ -15,7 +15,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static io.aanagtalon.backend.constant.Constant.PHOTO_DIRECTORY;
+import static io.aanagtalon.backend.constant.Constants.PHOTO_DIRECTORY;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 

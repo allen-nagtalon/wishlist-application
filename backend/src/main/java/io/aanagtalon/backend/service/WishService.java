@@ -10,5 +10,4 @@ public interface WishService {
     WishEntity createWish(String title, String description, String url, Long wishlistId, MultipartFile file);
     void deleteWish(WishEntity wishEntity);
     String uploadPhoto(Long id, MultipartFile file);
-
 }

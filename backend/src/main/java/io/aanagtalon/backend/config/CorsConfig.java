@@ -8,7 +8,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
-import static io.aanagtalon.backend.constant.Constant.X_REQUESTED_WITH;
+import static io.aanagtalon.backend.constant.Constants.X_REQUESTED_WITH;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
