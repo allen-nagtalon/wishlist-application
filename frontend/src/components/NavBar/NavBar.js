@@ -17,13 +17,18 @@ function NavBar () {
   }
 
   return (
-    <AppBar position='static'>
+    <AppBar id='app-bar' position='static' elevation={0} color='light' sx={{ my: 1 }}>
       <Container maxWidth='xl'>
         <Toolbar>
           <Typography
+            variant='logo'
+            component='a'
+            href='#app-bar'
             sx={{
               flexGrow: 1,
-              display: { md: 'flex' }
+              display: { md: 'flex' },
+              color: 'text.dark',
+              textDecoration: 'none'
             }}
           >
             WISHLIST.IO
@@ -33,7 +38,7 @@ function NavBar () {
             {pages.map((page) => (
               <Button
                 key={page}
-                sx={{ color: 'white', display: 'block' }}
+                sx={{ color: 'text.dark', display: 'block' }}
               >
                 {page}
               </Button>
