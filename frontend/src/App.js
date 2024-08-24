@@ -2,6 +2,8 @@ import NavBar from './components/NavBar/NavBar'
 import Footer from './components/Footer/Footer'
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import LandingPage from './views/LandingPage'
+import LoginPage from './views/LoginPage'
+import RegisterPage from './views/RegisterPage'
 
 const theme = createTheme({
   palette: {
@@ -19,7 +21,7 @@ const theme = createTheme({
       light: '#FFFFFF'
     },
     misc: {
-      main: '#FAF9EF'
+      bg1: '#FAF9EF'
     }
   },
   typography: {
@@ -40,7 +42,7 @@ function App () {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <NavBar />
-      <LandingPage />
+      <LoginPage />
     </ThemeProvider>
   )
 }
