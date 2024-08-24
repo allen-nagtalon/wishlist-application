@@ -17,7 +17,7 @@ function NavBar () {
   }
 
   return (
-    <AppBar id='app-bar' position='static' elevation={0} color='light' sx={{ my: 1 }}>
+    <AppBar id='app-bar' position='fixed' elevation={0} color='light' sx={{ py: 1 }}>
       <Container maxWidth='xl'>
         <Toolbar>
           <Typography
