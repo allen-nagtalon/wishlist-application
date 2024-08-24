@@ -1,5 +1,5 @@
-import { Box, Button, Typography } from "@mui/material"
-import bg from "../assets/landing-bg.jpg"
+import { Box, Button, Typography } from '@mui/material'
+import bg from '../assets/landing-bg.jpg'
 
 function LandingPage () {
   return (
