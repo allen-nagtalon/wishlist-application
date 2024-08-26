@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static io.aanagtalon.backend.constant.Constant.PHOTO_DIRECTORY;
+import static io.aanagtalon.backend.constant.Constants.PHOTO_DIRECTORY;
 import static io.aanagtalon.backend.utils.WishUtils.createNewWishEntity;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
