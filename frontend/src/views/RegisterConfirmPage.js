@@ -18,11 +18,14 @@ function RegisterConfirmPage () {
             p: 5
           }}
         >
-          <Typography>
+          <Typography variant='h5'>
             Thank you for registering with us!
           </Typography>
-          <Typography>
+          <Typography textAlign='center' sx={{ pt: 3, pb: 5 }}>
             Please visit your email and click on the confirmation link provided to unlock your new account!
+          </Typography>
+          <Typography component='a' href='/' variant='body2'>
+            Return to Home
           </Typography>
         </Paper>
       </Box>
