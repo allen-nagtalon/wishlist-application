@@ -11,7 +11,7 @@ function RegisterPage () {
       <Box
         sx={{
           alignItems: 'center',
-          pt: 18
+          mt: 18
         }}
       >
         <Paper
@@ -20,8 +20,7 @@ function RegisterPage () {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            px: 5,
-            py: 5
+            p: 5
           }}
         >
           <Typography component='h2' variant='h5' sx={{ fontWeight: 600 }}>

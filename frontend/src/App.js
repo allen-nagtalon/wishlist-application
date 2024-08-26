@@ -1,9 +1,10 @@
 import NavBar from './components/NavBar/NavBar'
 import Footer from './components/Footer/Footer'
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+import { Box, createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import LandingPage from './views/LandingPage'
 import LoginPage from './views/LoginPage'
 import RegisterPage from './views/RegisterPage'
+import WishlistViewPage from './views/WishlistViewPage'
 
 const theme = createTheme({
   palette: {
@@ -42,7 +43,8 @@ function App () {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <NavBar />
-      <LoginPage />
+      <Box sx={{ mt: 10 }} />
+      <WishlistViewPage />
     </ThemeProvider>
   )
 }
