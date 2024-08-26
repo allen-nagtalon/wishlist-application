@@ -6,6 +6,7 @@ import LoginPage from './views/LoginPage'
 import RegisterPage from './views/RegisterPage'
 import WishlistViewPage from './views/WishlistViewPage'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import RegisterConfirmPage from './views/RegisterConfirmPage'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <RegisterPage />
+  },
+  {
+    path: '/register/confirm',
+    element: <RegisterConfirmPage />
   }
 ])
 

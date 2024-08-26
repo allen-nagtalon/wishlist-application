@@ -1,9 +1,39 @@
 import { Box, Button, Container, Grid, Paper, TextField, Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 function RegisterPage () {
+  const [username, setUsername] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const navigate = useNavigate()
+
   const handleSubmit = (event) => {
     event.preventDefault()
+
+    axios.post('http://localhost:8085/user/register',
+      {
+        username: username,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password
+      }
+    )
+      .then((res) => {
+        if (res.status === 201) {
+          navigate('/register/confirm')
+        } else {
+          // Handle API errors
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
@@ -32,9 +62,11 @@ function RegisterPage () {
                 <TextField
                   required
                   fullWidth
-                  id='userrname'
+                  id='username'
                   label='Username'
                   name='username'
+                  value={username}
+                  onInput={e => setUsername(e.target.value)}
                   autoComplete='username'
                 />
               </Grid>
@@ -45,6 +77,8 @@ function RegisterPage () {
                   fullWidth
                   id='firstName'
                   label='First Name'
+                  value={firstName}
+                  onInput={e => setFirstName(e.target.value)}
                   autoFocus
                 />
               </Grid>
@@ -55,6 +89,8 @@ function RegisterPage () {
                   fullWidth
                   id='lastName'
                   label='Last Name'
+                  value={lastName}
+                  onInput={e => setLastName(e.target.value)}
                   autoFocus
                 />
               </Grid>
@@ -65,6 +101,8 @@ function RegisterPage () {
                   id='email'
                   label='Email Address'
                   name='email'
+                  value={email}
+                  onInput={e => setEmail(e.target.value)}
                   autoComplete='email'
                 />
               </Grid>
@@ -76,12 +114,14 @@ function RegisterPage () {
                   label='Password'
                   type='password'
                   id='password'
+                  value={password}
+                  onInput={e => setPassword(e.target.value)}
                   autoComplete='new-password'
                 />
               </Grid>
             </Grid>
             <Button
-              type='reset'
+              type='submit'
               fullWidth
               variant='contained'
               sx={{
