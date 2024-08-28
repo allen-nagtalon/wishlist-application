@@ -7,9 +7,10 @@ import org.springframework.beans.BeanUtils;
 import java.util.UUID;
 
 public class UserUtils {
-    public static UserEntity createNewEntity(String firstName, String lastName, String email) {
+    public static UserEntity createNewEntity(String username, String firstName, String lastName, String email) {
         return UserEntity.builder()
                 .userId(UUID.randomUUID().toString())
+                .username(username)
                 .firstName(firstName)
                 .lastName(lastName)
                 .email(email)

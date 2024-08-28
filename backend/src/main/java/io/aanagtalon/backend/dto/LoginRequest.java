@@ -11,8 +11,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginRequest {
     @NotEmpty(message = "Email cannot be empty or null")
-    @Email(message = "Invalid email address")
-    private String email;
+    private String username;
 
     @NotEmpty(message = "Password cannot be empty or null")
     private String password;

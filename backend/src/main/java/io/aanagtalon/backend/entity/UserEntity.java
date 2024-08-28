@@ -23,7 +23,9 @@ public class UserEntity extends Auditable {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(unique = true, nullable = false)
     private String username;
+    
     private String firstName;
     private String lastName;
     private String imageUrl;
