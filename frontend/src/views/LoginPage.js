@@ -1,9 +1,28 @@
-import { Box, Button, Checkbox, Container, Divider, FormControlLabel, Grid, Paper, TextField, Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Box, Button, Checkbox, Container, Divider, FormControlLabel, Paper, TextField, Typography } from '@mui/material'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import ApiInstance from '../services/ApiInstance'
 
 function LoginPage () {
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+
+  const navigate = useNavigate()
+
   const handleSubmit = (event) => {
     event.preventDefault()
+
+    ApiInstance.post('/user/login',
+      {
+        username: email,
+        password: password
+      }
+    )
+      .then((res) => {
+        window.localStorage.setItem('access_token', res.data.data.token)
+        ApiInstance.defaults.headers.Authorization = 'JWT ' + window.localStorage.getItem('access_token')
+        navigate('/')
+      })
   }
 
   return (
@@ -30,9 +49,11 @@ function LoginPage () {
             <TextField
               required
               fullWidth
-              id='username'
-              label='Username/Email'
-              name='username'
+              id='email'
+              label='Email'
+              name='email'
+              value={email}
+              onInput={e => setEmail(e.target.value)}
               autoFocus
             />
             <TextField
@@ -42,7 +63,8 @@ function LoginPage () {
               label='Password'
               type='password'
               name='password'
-              autoFocus
+              value={password}
+              onInput={e => setPassword(e.target.value)}
               sx={{ my: 2 }}
             />
             <FormControlLabel

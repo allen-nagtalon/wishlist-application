@@ -1,7 +1,7 @@
 import { Box, Button, Container, Grid, Paper, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import ApiInstance from '../services/ApiInstance'
 
 function RegisterPage () {
   const [username, setUsername] = useState('')
@@ -15,7 +15,7 @@ function RegisterPage () {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    axios.post('http://localhost:8085/user/register',
+    ApiInstance.post('/user/register',
       {
         username: username,
         firstName: firstName,
