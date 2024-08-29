@@ -17,7 +17,7 @@ const wishes = [
   }
 ]
 
-function WishlistViewPage () {
+function WishListView () {
   return (
     <Container maxWidth='lg'>
       <Box>
@@ -67,4 +67,4 @@ function WishlistViewPage () {
   )
 }
 
-export default WishlistViewPage
+export default WishListView

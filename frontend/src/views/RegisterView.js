@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ApiInstance from '../services/ApiInstance'
 
-function RegisterPage () {
+function RegisterView () {
   const [username, setUsername] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -145,4 +145,4 @@ function RegisterPage () {
   )
 }
 
-export default RegisterPage
+export default RegisterView

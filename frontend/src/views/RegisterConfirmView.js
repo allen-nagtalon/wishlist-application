@@ -1,6 +1,6 @@
 import { Box, Container, Paper, Typography } from '@mui/material'
 
-function RegisterConfirmPage () {
+function RegisterConfirmView () {
   return (
     <Container maxWidth='sm'>
       <Box
@@ -33,4 +33,4 @@ function RegisterConfirmPage () {
   )
 }
 
-export default RegisterConfirmPage
+export default RegisterConfirmView

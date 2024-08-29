@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ApiInstance from '../services/ApiInstance'
 
-function LoginPage () {
+function LoginView () {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
 
@@ -102,4 +102,4 @@ function LoginPage () {
   )
 }
 
-export default LoginPage
+export default LoginView

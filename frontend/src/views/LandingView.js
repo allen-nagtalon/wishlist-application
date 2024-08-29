@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from '@mui/material'
 import bg from '../assets/landing-bg.jpg'
 
-function LandingPage () {
+function LandingView () {
   return (
     <>
       <Box
@@ -68,4 +68,4 @@ function LandingPage () {
   )
 }
 
-export default LandingPage
+export default LandingView

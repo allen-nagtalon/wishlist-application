@@ -1,28 +1,28 @@
 import NavBar from './components/NavBar/NavBar'
 import Footer from './components/Footer/Footer'
 import { Box, createTheme, CssBaseline, ThemeProvider } from '@mui/material'
-import LandingPage from './views/LandingPage'
-import LoginPage from './views/LoginPage'
-import RegisterPage from './views/RegisterPage'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import RegisterConfirmPage from './views/RegisterConfirmPage'
+import LandingView from './views/LandingView'
+import LoginView from './views/LoginView'
+import RegisterView from './views/RegisterView'
+import RegisterConfirmView from './views/RegisterConfirmView'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <LandingPage />
+    element: <LandingView />
   },
   {
     path: '/login',
-    element: <LoginPage />
+    element: <LoginView />
   },
   {
     path: '/register',
-    element: <RegisterPage />
+    element: <RegisterView />
   },
   {
     path: '/register/confirm',
-    element: <RegisterConfirmPage />
+    element: <RegisterConfirmView />
   }
 ])
 
