@@ -5,6 +5,27 @@ import LandingPage from './views/LandingPage'
 import LoginPage from './views/LoginPage'
 import RegisterPage from './views/RegisterPage'
 import WishlistViewPage from './views/WishlistViewPage'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import RegisterConfirmPage from './views/RegisterConfirmPage'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <LandingPage />
+  },
+  {
+    path: '/login',
+    element: <LoginPage />
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />
+  },
+  {
+    path: '/register/confirm',
+    element: <RegisterConfirmPage />
+  }
+])
 
 const theme = createTheme({
   palette: {
@@ -44,7 +65,7 @@ function App () {
       <CssBaseline />
       <NavBar />
       <Box sx={{ mt: 10 }} />
-      <WishlistViewPage />
+      <RouterProvider router={router} />
     </ThemeProvider>
   )
 }

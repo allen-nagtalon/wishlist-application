@@ -66,6 +66,7 @@ server:
     whitelabel:
       enabled: false
 
-jwt:
-  expiration: ${JWT_EXPIRATION}
-  secret: ${JWT_SECRET}
+security:
+  jwt:
+    expiration-time: ${JWT_EXPIRATION}
+    secret-key: ${JWT_SECRET}

@@ -1,19 +1,17 @@
 package io.aanagtalon.backend.service;
 
-import io.aanagtalon.backend.domain.Token;
-import io.aanagtalon.backend.domain.TokenData;
-import io.aanagtalon.backend.dto.User;
-import io.aanagtalon.backend.enumeration.TokenType;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import io.jsonwebtoken.Claims;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Map;
 import java.util.function.Function;
 
 public interface JwtService {
-    String createToken(User user, Function<Token, String> tokenFunction);
-    Optional<String> extractToken(HttpServletRequest request, String tokenType);
-    void addCookie(HttpServletResponse response, User user, TokenType type);
-    <T> T getTokenData(String token, Function<TokenData, T> tokenFunction);
-    void removeCookie(HttpServletRequest request, HttpServletResponse response, String cookieName);
+    String extractUsername(String token);
+    <T> T extractClaim(String token, Function<Claims, T> claimsResolver);
+    String generateToken(UserDetails userDetails);
+    String generateToken(Map<String, Object> extraClaims, UserDetails userDetails);
+    long getExpirationTime();
+    boolean isTokenValid(String token, UserDetails userDetails);
 }

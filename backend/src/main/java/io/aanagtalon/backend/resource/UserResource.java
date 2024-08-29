@@ -1,16 +1,16 @@
 package io.aanagtalon.backend.resource;
 
 import io.aanagtalon.backend.domain.Response;
-import io.aanagtalon.backend.domain.WishlistAuthenticationToken;
+import io.aanagtalon.backend.domain.UserDetailModel;
 import io.aanagtalon.backend.dto.LoginRequest;
 import io.aanagtalon.backend.dto.UserRequest;
+import io.aanagtalon.backend.service.AuthenticationService;
+import io.aanagtalon.backend.service.JwtService;
 import io.aanagtalon.backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -26,11 +26,12 @@ import static org.springframework.http.HttpStatus.OK;
 @RequestMapping(path = { "/user" })
 public class UserResource {
     private final UserService userService;
-    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final AuthenticationService authService;
 
     @PostMapping("/register")
     public ResponseEntity<Response> saveUser(@RequestBody @Valid UserRequest user, HttpServletRequest request) {
-        userService.createUser(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+        userService.createUser(user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
         return ResponseEntity.created(getUri()).body(getResponse(request, emptyMap(), "Account created. Check your email to enable your account", CREATED));
     }
 
@@ -41,10 +42,12 @@ public class UserResource {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest request) {
-        WishlistAuthenticationToken unauthenticated = WishlistAuthenticationToken.unauthenticated(request.getEmail(), request.getPassword());
-        Authentication authenticate = authenticationManager.authenticate(unauthenticated);
-        return ResponseEntity.ok().body(Map.of("user", authenticate));
+    public ResponseEntity<Response> authenticate(@RequestBody @Valid LoginRequest input, HttpServletRequest request) {
+        UserDetailModel authUser = authService.authenticate(input);
+
+        String jwtToken = jwtService.generateToken(authUser);
+
+        return ResponseEntity.ok().body(getResponse(request, Map.of("token", jwtToken, "expiresIn", jwtService.getExpirationTime()), "Account logged in", OK));
     }
 
     private URI getUri() {

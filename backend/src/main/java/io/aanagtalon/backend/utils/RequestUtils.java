@@ -2,7 +2,7 @@ package io.aanagtalon.backend.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aanagtalon.backend.domain.Response;
-import io.aanagtalon.backend.entity.exception.WishlistException;
+import io.aanagtalon.backend.entity.exception.ApiException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ public class RequestUtils {
             new ObjectMapper().writeValue(outputStream, response);
             outputStream.flush();
         } catch (Exception exception) {
-            throw new WishlistException(exception.getMessage());
+            throw new ApiException(exception.getMessage());
         }
     };
 
@@ -43,7 +43,7 @@ public class RequestUtils {
                 exception instanceof LockedException ||
                 exception instanceof BadCredentialsException ||
                 exception instanceof CredentialsExpiredException ||
-                exception instanceof WishlistException) {
+                exception instanceof ApiException) {
             return exception.getMessage();
         }
         if(httpStatus.is5xxServerError()) {

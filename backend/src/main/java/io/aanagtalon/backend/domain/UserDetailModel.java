@@ -1,32 +1,34 @@
 package io.aanagtalon.backend.domain;
 
-import io.aanagtalon.backend.dto.User;
 import io.aanagtalon.backend.entity.CredentialEntity;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import io.aanagtalon.backend.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
-@RequiredArgsConstructor
-public class UserPrincipal implements UserDetails {
-    @Getter
-    private final User user;
-    private final CredentialEntity credentialEntity;
+public class UserDetailModel implements UserDetails {
+    private final String username;
+    private final String password;
+
+    public UserDetailModel(UserEntity user, CredentialEntity credential) {
+        this.username = user.getEmail();
+        this.password = credential.getPassword();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of();
     }
 
     @Override
     public String getPassword() {
-        return credentialEntity.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return username;
     }
 }

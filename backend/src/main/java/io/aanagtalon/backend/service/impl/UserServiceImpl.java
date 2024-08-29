@@ -1,13 +1,11 @@
 package io.aanagtalon.backend.service.impl;
 
 import io.aanagtalon.backend.cache.CacheStore;
-import io.aanagtalon.backend.dto.User;
 import io.aanagtalon.backend.entity.ConfirmationEntity;
 import io.aanagtalon.backend.entity.CredentialEntity;
 import io.aanagtalon.backend.entity.UserEntity;
-import io.aanagtalon.backend.entity.exception.WishlistException;
+import io.aanagtalon.backend.entity.exception.ApiException;
 import io.aanagtalon.backend.enumeration.EventType;
-import io.aanagtalon.backend.enumeration.LoginType;
 import io.aanagtalon.backend.event.UserEvent;
 import io.aanagtalon.backend.repo.ConfirmationRepo;
 import io.aanagtalon.backend.repo.CredentialRepo;
@@ -17,12 +15,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 import static io.aanagtalon.backend.utils.UserUtils.createNewEntity;
-import static io.aanagtalon.backend.utils.UserUtils.fromUserEntity;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -32,14 +30,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final CredentialRepo credentialRepo;
     private final ConfirmationRepo confirmationRepo;
-    //private final BCryptPasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder;
     private final CacheStore<String, Integer> userCache;
     private final ApplicationEventPublisher publisher;
 
     @Override
-    public void createUser(String firstName, String lastName, String email, String password) {
-        var userEntity = userRepo.save(createNewEntity(firstName, lastName, email));
-        var credentialEntity = new CredentialEntity(userEntity, password);
+    public void createUser(String username, String firstName, String lastName, String email, String password) {
+        var userEntity = userRepo.save(createNewEntity(username, firstName, lastName, email));
+        var credentialEntity = new CredentialEntity(userEntity, encoder.encode(password));
         credentialRepo.save(credentialEntity);
         var confirmationEntity = new ConfirmationEntity(userEntity);
         confirmationRepo.save(confirmationEntity);
@@ -56,53 +54,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateLoginAttempt(String email, LoginType loginType) {
-        var userEntity = getUserEntityByEmail(email);
-        switch(loginType) {
-            case LOGIN_ATTEMPT -> {
-                if(userCache.get(userEntity.getEmail()) == null) {
-                    userEntity.setLoginAttempts(0);
-                    userEntity.setAccountNonLocked(true);
-                }
-                userEntity.setLoginAttempts(userEntity.getLoginAttempts() + 1);
-                userCache.put(userEntity.getEmail(), userEntity.getLoginAttempts());
-                if (userCache.get(userEntity.getEmail()) > 5) {
-                    userEntity.setAccountNonLocked(false);
-                }
-            }
-            case LOGIN_SUCCESS -> {
-                userEntity.setAccountNonLocked(true);
-                userEntity.setLoginAttempts(0);
-                userCache.evict(userEntity.getEmail());
-            }
-        }
-        userRepo.save(userEntity);
-    }
-
-    @Override
-    public User getUserByUserId(String userId) {
-        var userEntity = userRepo.findUserByUserId(userId).orElseThrow(() -> new WishlistException("User not found"));
-        return fromUserEntity(userEntity, getUserCredentialById(userEntity.getId()));
-    }
-
-    @Override
-    public User getUserByEmail(String email) {
-        UserEntity userEntity = getUserEntityByEmail(email);
-        return fromUserEntity(userEntity, getUserCredentialById(userEntity.getId()));
-    }
-
-    @Override
     public CredentialEntity getUserCredentialById(Long userId) {
         var credentialById = credentialRepo.getCredentialByUserEntityId(userId);
-        return credentialById.orElseThrow(() -> new WishlistException("Unable to find user credential"));
+        return credentialById.orElseThrow(() -> new ApiException("Unable to find user credential"));
     }
 
     private UserEntity getUserEntityByEmail(String email) {
         var userByEmail = userRepo.findByEmailIgnoreCase(email);
-        return userByEmail.orElseThrow(() -> new WishlistException("User not found"));
+        return userByEmail.orElseThrow(() -> new ApiException("User not found"));
     }
 
     private ConfirmationEntity getUserConfirmation(String key) {
-        return confirmationRepo.findByKey(key).orElseThrow(() -> new WishlistException("Confirmation key not found"));
+        return confirmationRepo.findByKey(key).orElseThrow(() -> new ApiException("Confirmation key not found"));
     }
 }
