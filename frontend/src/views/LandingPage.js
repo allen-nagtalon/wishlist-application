@@ -42,6 +42,8 @@ function LandingPage () {
             Create your wishlist today!
           </Typography>
           <Button
+            component='a'
+            href='/register'
             sx={{
               px: 3,
               py: 1,

@@ -50,6 +50,13 @@ public class UserResource {
         return ResponseEntity.ok().body(getResponse(request, Map.of("token", jwtToken, "expiresIn", jwtService.getExpirationTime()), "Account logged in", OK));
     }
 
+    @GetMapping
+    public ResponseEntity<Response> getUser(@RequestHeader(name = "Authorization") String token, HttpServletRequest request) {
+        var username = jwtService.extractUsername(token.substring(4));
+        var user = userService.getUserByEmail(username);
+        return ResponseEntity.ok().body(getResponse(request, Map.of("user", user), "User fetched from database", OK));
+    }
+
     private URI getUri() {
         return URI.create("");
     }

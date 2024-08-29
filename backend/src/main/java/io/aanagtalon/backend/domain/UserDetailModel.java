@@ -9,11 +9,11 @@ import java.util.Collection;
 import java.util.List;
 
 public class UserDetailModel implements UserDetails {
-    private final String username;
+    private final String email;
     private final String password;
 
     public UserDetailModel(UserEntity user, CredentialEntity credential) {
-        this.username = user.getEmail();
+        this.email = user.getEmail();
         this.password = credential.getPassword();
     }
 
@@ -29,6 +29,6 @@ public class UserDetailModel implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 }
