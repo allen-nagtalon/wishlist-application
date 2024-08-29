@@ -39,7 +39,7 @@ function NavBar () {
           <Typography
             variant='logo'
             component='a'
-            href='#app-bar'
+            href='/'
             sx={{
               flexGrow: 1,
               display: { md: 'flex' },
