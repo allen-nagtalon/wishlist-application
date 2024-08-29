@@ -11,7 +11,7 @@ function LandingPage () {
           backgroundImage: `url(${bg})`,
           backgroundSize: 'cover',
           backgroundAttachment: 'fixed',
-          height: '100vh'
+          height: '1000px'
         }}
       >
         <Box
@@ -54,15 +54,15 @@ function LandingPage () {
             REGISTER NOW
           </Button>
         </Box>
-        <Box
-          id='about'
-          sx={{
-            height: '600px',
-            bgcolor: 'light.main'
-          }}
-        >
-          Test
-        </Box>
+      </Box>
+      <Box
+        id='about'
+        sx={{
+          height: '600px',
+          bgcolor: 'light.main'
+        }}
+      >
+        Test
       </Box>
     </>
   )

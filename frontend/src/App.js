@@ -4,7 +4,6 @@ import { Box, createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import LandingPage from './views/LandingPage'
 import LoginPage from './views/LoginPage'
 import RegisterPage from './views/RegisterPage'
-import WishlistViewPage from './views/WishlistViewPage'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RegisterConfirmPage from './views/RegisterConfirmPage'
 
@@ -36,7 +35,8 @@ const theme = createTheme({
       main: '#6C584E'
     },
     accent: {
-      main: '#A2AF7F'
+      main: '#A2AF7F',
+      dark: '#717D4E'
     },
     text: {
       dark: '#261505',
@@ -66,6 +66,7 @@ function App () {
       <NavBar />
       <Box sx={{ mt: 10 }} />
       <RouterProvider router={router} />
+      <Footer />
     </ThemeProvider>
   )
 }
