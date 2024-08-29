@@ -54,6 +54,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity getUserByUsername(String username) {
+        return userRepo.findByUsername(username).orElseThrow(() -> new ApiException("Username " + username + " could not be found"));
+    }
+
+    @Override
+    public UserEntity getUserByEmail(String email) {
+        return userRepo.findByEmailIgnoreCase(email).orElseThrow(() -> new ApiException("Email " + email + " could not be found"));
+    }
+
+    @Override
     public CredentialEntity getUserCredentialById(Long userId) {
         var credentialById = credentialRepo.getCredentialByUserEntityId(userId);
         return credentialById.orElseThrow(() -> new ApiException("Unable to find user credential"));
