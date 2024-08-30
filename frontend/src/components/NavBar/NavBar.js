@@ -3,7 +3,16 @@ import { Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Ty
 import AppBar from '@mui/material/AppBar'
 import ApiInstance from '../../services/ApiInstance'
 
-const pages = ['Home', 'My Wishlists']
+const pages = [
+  {
+    title: 'Dashboard',
+    href: '/'
+  },
+  {
+    title: 'My Wishlists',
+    href: '/me/wishlists'
+  }
+]
 const userOptions = ['Log Out']
 
 function NavBar () {
@@ -53,11 +62,12 @@ function NavBar () {
           <Box sx={{ flexGrow: 0, display: { md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={logout}
-                sx={{ color: 'text.dark', display: 'block' }}
+                component='a'
+                href={page.href}
+                key={page.title}
+                sx={{ color: 'text.dark', display: 'block', ml: 3 }}
               >
-                {page}
+                {page.title}
               </Button>
             ))}
           </Box>

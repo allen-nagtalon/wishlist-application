@@ -6,6 +6,8 @@ import LandingView from './views/LandingView'
 import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
 import RegisterConfirmView from './views/RegisterConfirmView'
+import WishlistListView from './views/WishlistListView'
+import WishListView from './views/WishListView'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
   {
     path: '/register/confirm',
     element: <RegisterConfirmView />
+  },
+  {
+    path: '/me/wishlists',
+    element: <WishlistListView />
+  },
+  {
+    path: '/me/wishlists/test',
+    element: <WishListView />
   }
 ])
 
