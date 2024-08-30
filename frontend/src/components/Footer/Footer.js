@@ -11,7 +11,7 @@ function Footer () {
       </Typography>
       <Box sx={{ display: 'flex' }}>
         {links.map((link) => (
-          <Typography component='a' key='link' alignSelf='center' variant='body2' sx={{ px: 3 }}>
+          <Typography component='a' key={link} alignSelf='center' variant='body2' sx={{ px: 3 }}>
             {link}
           </Typography>
         ))}
