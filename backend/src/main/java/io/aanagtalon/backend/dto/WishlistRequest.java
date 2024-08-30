@@ -12,6 +12,8 @@ public class WishlistRequest {
     @NotEmpty(message = "Title of wishlist cannot be null")
     private String title;
 
+    private String description;
+
     @NotEmpty(message = "Owner ID of the wishlist cannot be null")
     private Long ownerId;
 }

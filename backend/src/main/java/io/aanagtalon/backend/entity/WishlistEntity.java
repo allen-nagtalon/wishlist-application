@@ -20,6 +20,8 @@ public class WishlistEntity extends Auditable {
     @Column(nullable = false)
     private String title;
 
+    private String description;
+
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_wishlists",
@@ -37,8 +39,9 @@ public class WishlistEntity extends Auditable {
     )
     private Set<WishEntity> wishes;
 
-    public WishlistEntity(String title, UserEntity owner) {
+    public WishlistEntity(String title, String description, UserEntity owner) {
         this.title = title;
+        this.description = description;
         this.owner = owner;
     }
 

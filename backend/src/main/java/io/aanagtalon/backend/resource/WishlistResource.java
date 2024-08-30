@@ -22,7 +22,7 @@ public class WishlistResource {
     public ResponseEntity<WishlistEntity> createWishlist(@RequestBody WishlistRequest request) {
         return ResponseEntity
                 .created(URI.create("/wishlist/id"))
-                .body(wishlistService.createWishlist(request.getTitle(), request.getOwnerId()));
+                .body(wishlistService.createWishlist(request.getTitle(), request.getDescription(), request.getOwnerId()));
     }
 
 }

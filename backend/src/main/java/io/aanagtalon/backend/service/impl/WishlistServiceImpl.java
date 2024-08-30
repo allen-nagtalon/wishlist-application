@@ -19,8 +19,8 @@ public class WishlistServiceImpl implements WishlistService {
     private final WishlistRepo wishlistRepo;
 
     @Override
-    public WishlistEntity createWishlist(String title, Long ownerId) {
+    public WishlistEntity createWishlist(String title, String description, Long ownerId) {
         var owner = userRepo.findById(ownerId).orElseThrow(() -> new ApiException("User not found"));
-        return wishlistRepo.save(new WishlistEntity(title, owner));
+        return wishlistRepo.save(new WishlistEntity(title, description, owner));
     }
 }
