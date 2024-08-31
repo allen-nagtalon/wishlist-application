@@ -13,7 +13,6 @@ const pages = [
     href: '/me/wishlists'
   }
 ]
-const userOptions = ['Log Out']
 
 function NavBar () {
   const [user, setUser] = useState(null)
@@ -74,7 +73,7 @@ function NavBar () {
 
           {user
             ? <>
-              <Box sx={{ flexGrow: 0, pl: 5 }}>
+              <Box sx={{ flexGrow: 0, ml: 3 }}>
                 <IconButton onClick={handleOpenUserMenu}>
                   <Avatar src='https://kpopping.com/documents/0f/1/800/240219-XG-Twitter-Update-Jurin-documents-1.jpeg?v=2f72c' />
                 </IconButton>
@@ -94,16 +93,14 @@ function NavBar () {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  {userOptions.map((option) => (
-                    <MenuItem key={option}>
-                      <Typography>{option}</Typography>
-                    </MenuItem>
-                  ))}
+                  <MenuItem onClick={logout}>
+                    <Typography>Log Out</Typography>
+                  </MenuItem>
                 </Menu>
               </Box>
             </>
             : <>
-              <Button component='a' href='/login' sx={{ color: 'text.dark', display: 'block' }}>
+              <Button component='a' href='/login' sx={{ color: 'text.dark', ml: 3 }}>
                 Log In
               </Button>
             </>
