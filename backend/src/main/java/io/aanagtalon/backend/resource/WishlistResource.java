@@ -2,6 +2,7 @@ package io.aanagtalon.backend.resource;
 
 import io.aanagtalon.backend.dto.WishlistRequest;
 import io.aanagtalon.backend.entity.WishlistEntity;
+import io.aanagtalon.backend.service.JwtService;
 import io.aanagtalon.backend.service.WishlistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,11 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class WishlistResource {
     private final WishlistService wishlistService;
+    private final JwtService jwtService;
 
     @PostMapping("/create")
     public ResponseEntity<WishlistEntity> createWishlist(@RequestBody WishlistRequest request) {
+
         return ResponseEntity
                 .created(URI.create("/wishlist/id"))
                 .body(wishlistService.createWishlist(request.getTitle(), request.getDescription(), request.getOwnerId()));

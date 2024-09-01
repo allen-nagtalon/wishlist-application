@@ -1,5 +1,6 @@
 package io.aanagtalon.backend.service.impl;
 
+import io.aanagtalon.backend.domain.UserDetailModel;
 import io.aanagtalon.backend.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -35,12 +35,16 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(UserDetailModel userDetails) {
+        return generateToken(Map.of(
+                "id", userDetails.getId(),
+                "firstName", userDetails.getFirstName(),
+                "lastName", userDetails.getLastName()
+        ), userDetails);
     }
 
     @Override
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public String generateToken(Map<String, Object> extraClaims, UserDetailModel userDetails) {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
@@ -49,7 +53,7 @@ public class JwtServiceImpl implements JwtService {
         return jwtExpiration;
     }
 
-    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
+    private String buildToken(Map<String, Object> extraClaims, UserDetailModel userDetails, long expiration) {
         return Jwts.builder()
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
