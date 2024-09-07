@@ -29,6 +29,7 @@ public class WishlistEntity extends Auditable {
                     name = "wishlist_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"))
+    @JsonIgnore
     private UserEntity owner;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
@@ -37,6 +38,7 @@ public class WishlistEntity extends Auditable {
             joinColumns = @JoinColumn(name = "wishlist_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "wish_id", referencedColumnName = "id")
     )
+    @JsonIgnore
     private Set<WishEntity> wishes;
 
     public WishlistEntity(String title, String description, UserEntity owner) {

@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional(rollbackOn = Exception.class)
 @RequiredArgsConstructor
@@ -22,5 +24,10 @@ public class WishlistServiceImpl implements WishlistService {
     public WishlistEntity createWishlist(String title, String description, Long ownerId) {
         var owner = userRepo.findById(ownerId).orElseThrow(() -> new ApiException("User not found"));
         return wishlistRepo.save(new WishlistEntity(title, description, owner));
+    }
+
+    @Override
+    public List<WishlistEntity> getWishlistsByOwnerId(long ownerId) {
+        return wishlistRepo.findByOwner_Id(ownerId);
     }
 }
