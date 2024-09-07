@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Container, Paper, styled, TextField, Typography } from '@mui/material'
 import Fade from '@mui/material/Fade'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Modal as BaseModal } from '@mui/base/Modal'
 import AddIcon from '@mui/icons-material/Add'
 import ApiInstance from '../services/ApiInstance'
@@ -46,12 +46,23 @@ function WishlistListView () {
       }
     )
       .then((res) => {
-        console.log(res)
         setModalOpen(false)
+        fetchUserWishlists()
       })
   }
 
-  // const [wishlists, setWishlists] = useState(null)
+  const fetchUserWishlists = () => {
+    ApiInstance.get('/wishlist')
+      .then((res) => {
+        setWishlists(res.data.data.wishlists)
+      })
+  }
+
+  const [wishlists, setWishlists] = useState(null)
+
+  useEffect(() => {
+    fetchUserWishlists()
+  }, [])
 
   return (
     <>
@@ -72,29 +83,32 @@ function WishlistListView () {
               Add New Wishlist
             </Button>
           </Box>
-          {testWishlists.map((wishlist) => (
-            <Card key={wishlist.title} sx={{ borderRadius: 5, my: 3 }}>
-              <CardActionArea>
-                <Box sx={{ display: 'flex', height: '250px' }}>
-                  <CardContent sx={{ flex: 2, flexGrow: 1 }}>
-                    <Box sx={{ ml: 5, mr: 3, my: 3 }}>
-                      <Typography variant='h5' sx={{ mb: 2 }}>
-                        {wishlist.title}
-                      </Typography>
-                      <Typography>
-                        {wishlist.description}
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                  <CardMedia
-                    component='img'
-                    image={wishlist.photoUrl}
-                    sx={{ objectFit: 'cover', width: '250px' }}
-                  />
-                </Box>
-              </CardActionArea>
-            </Card>
-          ))}
+          {wishlists
+            ? wishlists.map((wishlist) => (
+              <Card key={wishlist.title} sx={{ borderRadius: 5, my: 3 }}>
+                <CardActionArea>
+                  <Box sx={{ display: 'flex', height: '250px' }}>
+                    <CardContent sx={{ flex: 2, flexGrow: 1 }}>
+                      <Box sx={{ ml: 5, mr: 3, my: 3 }}>
+                        <Typography variant='h5' sx={{ mb: 2 }}>
+                          {wishlist.title}
+                        </Typography>
+                        <Typography>
+                          {wishlist.description}
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                    <CardMedia
+                      component='img'
+                      image={wishlist.photoUrl}
+                      sx={{ objectFit: 'cover', width: '250px' }}
+                    />
+                  </Box>
+                </CardActionArea>
+              </Card>
+              ))
+            : <></>
+          }
           <Card sx={{ borderRadius: 5 }}>
             <CardActionArea onClick={handleOpen}>
               <Box alignItems='center' justifyContent='center' sx={{ display: 'flex', py: 5 }}>
