@@ -4,6 +4,7 @@ import Fade from '@mui/material/Fade'
 import { useState } from 'react'
 import { Modal as BaseModal } from '@mui/base/Modal'
 import AddIcon from '@mui/icons-material/Add'
+import ApiInstance from '../services/ApiInstance'
 // import PropTypes from 'prop-types'
 
 const testWishlists = [
@@ -36,16 +37,26 @@ function WishlistListView () {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    console.log(ApiInstance.defaults.headers.Authorization)
 
-    console.log(formState)
+    ApiInstance.post('/wishlist',
+      {
+        title: formState.title,
+        description: formState.description
+      }
+    )
+      .then((res) => {
+        console.log(res)
+        setModalOpen(false)
+      })
   }
 
   // const [wishlists, setWishlists] = useState(null)
 
   return (
     <>
-      <Box id='wishlist-listview' bgcolor='misc.bg1'>
-        <Container maxWidth='md' sx={{ mt: 10, py: 10 }}>
+      <Box id='wishlist-listview' bgcolor='misc.bg1' sx={{ height: '100dvh' }}>
+        <Container maxWidth='md' sx={{ mt: 10, pt: 10 }}>
           <Box sx={{ display: 'flex' }}>
             <Typography variant='h4' sx={{ flexGrow: 1 }}>
               Your Wishlists
