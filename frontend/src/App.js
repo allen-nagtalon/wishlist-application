@@ -74,8 +74,9 @@ function App () {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <NavBar />
-      <Box sx={{ mt: 10 }} />
+      <Box id='navbar-spacing' sx={{ mt: 10 }} />
       <RouterProvider router={router} />
+      <Box id='footer-spacing' sx={{ mb: '50px' }} />
       <Footer />
     </ThemeProvider>
   )

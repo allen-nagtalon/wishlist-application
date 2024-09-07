@@ -66,9 +66,9 @@ function WishlistListView () {
 
   return (
     <>
-      <Box id='wishlist-listview' bgcolor='misc.bg1' sx={{ height: '100dvh' }}>
-        <Container maxWidth='md' sx={{ mt: 10, pt: 10 }}>
-          <Box sx={{ display: 'flex' }}>
+      <Box id='wishlist-listview' bgcolor='misc.bg1' sx={{ minHeight: '90dvh' }}>
+        <Container maxWidth='md' sx={{ pt: 10 }}>
+          <Box sx={{ display: 'flex', mb: 3 }}>
             <Typography variant='h4' sx={{ flexGrow: 1 }}>
               Your Wishlists
             </Typography>

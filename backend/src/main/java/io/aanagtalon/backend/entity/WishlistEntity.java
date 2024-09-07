@@ -22,7 +22,7 @@ public class WishlistEntity extends Auditable {
 
     private String description;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JoinTable(
             name = "user_wishlists",
             joinColumns = @JoinColumn(
