@@ -21,8 +21,8 @@ function LoginView () {
       .then((res) => {
         window.localStorage.setItem('access_token', res.data.data.token)
         ApiInstance.defaults.headers.Authorization = window.localStorage.getItem('access_token')
-        navigate('/')
       })
+      .then(navigate('/'))
   }
 
   return (
