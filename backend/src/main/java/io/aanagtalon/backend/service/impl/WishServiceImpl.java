@@ -5,6 +5,7 @@ import io.aanagtalon.backend.entity.exception.ApiException;
 import io.aanagtalon.backend.repo.WishRepo;
 import io.aanagtalon.backend.repo.WishlistRepo;
 import io.aanagtalon.backend.service.WishService;
+import io.aanagtalon.backend.utils.ImageUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,18 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
-import static io.aanagtalon.backend.constant.Constants.PHOTO_DIRECTORY;
+import static io.aanagtalon.backend.utils.ImageUtils.photoFunction;
 import static io.aanagtalon.backend.utils.WishUtils.createNewWishEntity;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
 @Slf4j
@@ -74,23 +66,4 @@ public class WishServiceImpl implements WishService {
         wishRepo.save(wishEntity);
         return photoUrl;
     }
-
-    private final Function<String, String> fileExtension = filename -> Optional.of(filename).filter(name -> name.contains("."))
-            .map(name -> "." + name.substring(filename.lastIndexOf(".") + 1)).orElse(".png");
-
-    private final BiFunction<String, MultipartFile, String> photoFunction = (id, image) -> {
-        String filename = id + fileExtension.apply(image.getOriginalFilename());
-        try {
-            Path fileStorageLocation = Paths.get(PHOTO_DIRECTORY).toAbsolutePath().normalize();
-            if (!Files.exists(fileStorageLocation)) {
-                Files.createDirectories(fileStorageLocation);
-            }
-            Files.copy(image.getInputStream(), fileStorageLocation.resolve(filename), REPLACE_EXISTING);
-            return ServletUriComponentsBuilder
-                    .fromCurrentContextPath()
-                    .path("/wishes/image/" + filename).toUriString();
-        } catch (Exception exception) {
-            throw new RuntimeException("Unable to save image!");
-        }
-    };
 }
