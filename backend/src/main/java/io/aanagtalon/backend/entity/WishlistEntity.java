@@ -26,12 +26,6 @@ public class WishlistEntity extends Auditable {
     private String photoUrl;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_wishlists",
-            joinColumns = @JoinColumn(
-                    name = "wishlist_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"))
     @JsonIgnore
     private UserEntity owner;
 
