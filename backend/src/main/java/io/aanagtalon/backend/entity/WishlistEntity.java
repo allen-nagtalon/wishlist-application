@@ -1,6 +1,8 @@
 package io.aanagtalon.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,7 +25,7 @@ public class WishlistEntity extends Auditable {
     private String description;
     private String photoUrl;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_wishlists",
             joinColumns = @JoinColumn(
