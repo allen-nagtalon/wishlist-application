@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.util.Map;
@@ -37,5 +38,10 @@ public class WishlistResource {
         return ResponseEntity
                 .created(URI.create("/wishlist/id"))
                 .body(getResponse(request, emptyMap(), "Wishlist created.", CREATED));
+    }
+
+    @PutMapping("/photo")
+    public ResponseEntity<String> uploadPhoto(@RequestParam("id") Long id, @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok().body(wishlistService.uploadPhoto(id, file));
     }
 }

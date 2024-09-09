@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { Modal as BaseModal } from '@mui/base/Modal'
 import AddIcon from '@mui/icons-material/Add'
 import ApiInstance from '../services/ApiInstance'
-// import PropTypes from 'prop-types'
+import defaultGiftIcon from '../assets/default-gift.png'
 
 const testWishlists = [
   {
@@ -100,7 +100,7 @@ function WishlistListView () {
                     </CardContent>
                     <CardMedia
                       component='img'
-                      image={wishlist.photoUrl}
+                      image={wishlist.photoUrl ? wishlist.photoUrl : defaultGiftIcon}
                       sx={{ objectFit: 'cover', width: '250px' }}
                     />
                   </Box>
@@ -195,26 +195,5 @@ const Modal = styled(BaseModal)`
   align-items: center;
   justify-content: center;
 `
-
-// const Backdrop = React.forwardRef((props, ref) => {
-//   const { open, ...other } = props
-//   return (
-//     <Fade in={open}>
-//       <div ref={ref} {...other} />
-//     </Fade>
-//   )
-// })
-
-// Backdrop.propTypes = {
-//   open: PropTypes.bool
-// }
-
-// const StyledBackdrop = styled(Backdrop)`
-//   z-index: -1;
-//   position: fixed;
-//   inset: 0;
-//   background-color: rgb(0 0 0 / 0.5);
-//   -webkit-tap-highlight-color: transparent;
-// `
 
 export default WishlistListView

@@ -21,6 +21,7 @@ public class WishlistEntity extends Auditable {
     private String title;
 
     private String description;
+    private String photoUrl;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JoinTable(
