@@ -92,7 +92,7 @@ function LoginView () {
           </Typography>
           <Divider variant='middle' flexItem>or</Divider>
           <Typography variant='body2' sx={{ my: 2 }}>
-            <Link href='#'>
+            <Link to='/register'>
               Don't have an account? Sign Up
             </Link>
           </Typography>

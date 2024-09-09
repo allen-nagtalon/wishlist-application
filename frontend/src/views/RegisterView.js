@@ -68,6 +68,7 @@ function RegisterView () {
                   value={username}
                   onInput={e => setUsername(e.target.value)}
                   autoComplete='username'
+                  autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -79,7 +80,6 @@ function RegisterView () {
                   label='First Name'
                   value={firstName}
                   onInput={e => setFirstName(e.target.value)}
-                  autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -91,7 +91,6 @@ function RegisterView () {
                   label='Last Name'
                   value={lastName}
                   onInput={e => setLastName(e.target.value)}
-                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
@@ -135,7 +134,7 @@ function RegisterView () {
             </Button>
           </Box>
           <Typography variant='body2' sx={{ mt: 2 }}>
-            <Link href='#'>
+            <Link to='/login'>
               Already have an account?
             </Link>
           </Typography>
