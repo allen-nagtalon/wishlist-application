@@ -3,6 +3,7 @@ import AddIcon from '@mui/icons-material/Add'
 import { useEffect, useState } from 'react'
 import WishCardList from '../components/WishCardList/WishCardList'
 import { useParams } from 'react-router-dom'
+import ApiInstance from '../services/ApiInstance'
 
 const testWishes = [
   {
@@ -37,11 +38,16 @@ function WishListView (props) {
 
   const fetchWishes = () => {
     console.log(`Fetching wishes for wishlist ${wishlistId} from API`)
+    ApiInstance.get(`/wishes/wishlist/${wishlistId}`)
+      .then((res) => {
+        setWishes(res.data.data.wishes)
+        console.log(res)
+      })
   }
 
   useEffect(() => {
     fetchWishes()
-  }, [])
+  })
 
   return (
     <Container maxWidth='lg' sx={{ pt: 10, flexGrow: 1 }}>
