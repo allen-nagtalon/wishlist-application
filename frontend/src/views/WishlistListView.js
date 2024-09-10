@@ -50,6 +50,10 @@ function WishlistListView () {
       .then((res) => {
         setModalOpen(false)
         fetchUserWishlists()
+        setFormState({
+          title: '',
+          description: ''
+        })
       })
   }
 
