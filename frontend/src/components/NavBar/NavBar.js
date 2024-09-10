@@ -10,7 +10,7 @@ const pages = [
   },
   {
     title: 'My Wishlists',
-    href: '/me/wishlists'
+    href: '/wishlists'
   }
 ]
 

@@ -27,11 +27,11 @@ const router = createBrowserRouter([
     element: <RegisterConfirmView />
   },
   {
-    path: '/me/wishlists',
+    path: '/wishlists',
     element: <WishlistListView />
   },
   {
-    path: '/me/wishlists/test',
+    path: '/wishlists/:wishlistId',
     element: <WishListView />
   }
 ])

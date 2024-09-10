@@ -23,6 +23,8 @@ const testWishlists = [
 ]
 
 function WishlistListView () {
+  const [wishlists, setWishlists] = useState(null)
+
   const [formState, setFormState] = useState({
     title: '',
     description: ''
@@ -58,8 +60,6 @@ function WishlistListView () {
       })
   }
 
-  const [wishlists, setWishlists] = useState(null)
-
   useEffect(() => {
     fetchUserWishlists()
   }, [])
@@ -85,8 +85,8 @@ function WishlistListView () {
           </Box>
           {wishlists
             ? wishlists.map((wishlist) => (
-              <Card key={wishlist.title} sx={{ borderRadius: 5, my: 3 }}>
-                <CardActionArea>
+              <Card key={wishlist.id} sx={{ borderRadius: 5, my: 3 }}>
+                <CardActionArea href={`/wishlists/${wishlist.id}`}>
                   <Box sx={{ display: 'flex', height: '250px' }}>
                     <CardContent sx={{ flex: 2, flexGrow: 1 }}>
                       <Box sx={{ ml: 5, mr: 3, my: 3 }}>
