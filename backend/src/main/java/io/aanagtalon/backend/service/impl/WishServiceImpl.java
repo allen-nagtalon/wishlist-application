@@ -15,6 +15,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static io.aanagtalon.backend.utils.ImageUtils.photoFunction;
 import static io.aanagtalon.backend.utils.WishUtils.createNewWishEntity;
 
@@ -28,6 +30,11 @@ public class WishServiceImpl implements WishService {
 
     public Page<WishEntity> getAllWishes(int page, int size) {
         return wishRepo.findAll(PageRequest.of(page, size, Sort.by("id")));
+    }
+
+    @Override
+    public List<WishEntity> getWishesByWishlistId(long id) {
+        return wishRepo.findByWishlists_Id(id);
     }
 
     public WishEntity getWish(Long id) {
