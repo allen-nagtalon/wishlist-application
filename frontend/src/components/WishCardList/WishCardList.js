@@ -9,8 +9,8 @@ function WishCardList (props) {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
-          {
-            props.wishes.map((wish, i) => (
+          {props.wishes
+            ? props.wishes.map((wish, i) => (
               <Grid key={i} xs={4}>
                 <Card sx={{ borderRadius: 3 }}>
                   <CardMedia
@@ -34,7 +34,7 @@ function WishCardList (props) {
                         WebkitBoxOrient: 'vertical'
                       }}
                     >
-                      {wish.desc}
+                      {wish.description}
                     </Typography>
                   </CardContent>
                   <CardActions disableSpacing>
@@ -50,7 +50,8 @@ function WishCardList (props) {
                   </CardActions>
                 </Card>
               </Grid>
-            ))
+              ))
+            : <></>
           }
         </Grid>
       </Box>

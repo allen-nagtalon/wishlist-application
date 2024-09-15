@@ -66,7 +66,7 @@ function WishlistListView () {
 
   useEffect(() => {
     fetchUserWishlists()
-  })
+  }, [])
 
   return (
     <>
