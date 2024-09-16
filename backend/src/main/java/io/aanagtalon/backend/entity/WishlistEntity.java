@@ -42,4 +42,5 @@ public class WishlistEntity extends Auditable {
     public void addWishToWishlist(WishEntity wish) {
         wishes.add(wish);
     }
+
 }

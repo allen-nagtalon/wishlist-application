@@ -3,6 +3,7 @@ package io.aanagtalon.backend.resource;
 import io.aanagtalon.backend.domain.Response;
 import io.aanagtalon.backend.dto.WishRequest;
 import io.aanagtalon.backend.entity.WishEntity;
+import io.aanagtalon.backend.entity.exception.ApiException;
 import io.aanagtalon.backend.service.WishService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -10,18 +11,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Map;
 
-import static io.aanagtalon.backend.constant.Constants.PHOTO_DIRECTORY;
 import static io.aanagtalon.backend.utils.RequestUtils.getResponse;
+import static java.util.Collections.emptyMap;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
-import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @RestController
 @RequestMapping("/wishes")
@@ -39,12 +35,19 @@ public class WishResource {
 
     @GetMapping("/{id}")
     public ResponseEntity<WishEntity> getWish(@PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok().body(wishService.getWish(id));
+        return ResponseEntity.ok().body(wishService.getWish(id).orElseThrow(() -> new ApiException("Wish of " + id + " not found")));
     }
 
     @GetMapping(path = "/wishlist/{id}")
     public ResponseEntity<Response> getWishesByWishlistId(@PathVariable(value = "id") Long id, HttpServletRequest request) {
         return ResponseEntity.ok()
                 .body(getResponse(request, Map.of("wishes", wishService.getWishesByWishlistId(id)), "Wishes from wishlist id " + id + " have been fetched", OK));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response> deleteWish(@PathVariable(value = "id") Long id, HttpServletRequest request) {
+        wishService.deleteWish(id);
+        return ResponseEntity.ok()
+                .body(getResponse(request, emptyMap(), "Wish of ID " + id + " has been successfully deleted.", OK));
     }
 }

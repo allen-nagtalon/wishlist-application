@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 import static io.aanagtalon.backend.enumeration.ImageType.WISH;
 import static io.aanagtalon.backend.utils.ImageUtils.photoFunction;
@@ -37,8 +38,8 @@ public class WishServiceImpl implements WishService {
         return wishRepo.findByWishlists_Id(id);
     }
 
-    public WishEntity getWish(Long id) {
-        return wishRepo.findById(id).orElseThrow(() -> new RuntimeException("Contact not found"));
+    public Optional<WishEntity> getWish(Long id) {
+        return wishRepo.findById(id);
     }
 
     public WishEntity createWish(String title, String description, String url, Long wishlistId) {
@@ -56,8 +57,8 @@ public class WishServiceImpl implements WishService {
         return wishRepo.save(wish);
     }
 
-    public void deleteWish(WishEntity wishEntity) {
-        // ADD LATER
+    public void deleteWish(Long id) {
+        wishRepo.deleteById(id);
     }
 
     public String uploadPhoto(String wishId, MultipartFile file) {

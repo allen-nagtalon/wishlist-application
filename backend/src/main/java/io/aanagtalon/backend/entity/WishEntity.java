@@ -28,4 +28,11 @@ public class WishEntity extends Auditable {
     @ManyToMany(mappedBy = "wishes", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JsonIgnore
     private Set<WishlistEntity> wishlists = new HashSet<>();
+
+    @PreRemove
+    private void removeWishlistAssociations() {
+        for (WishlistEntity wishlist : this.wishlists) {
+            wishlist.getWishes().remove(this);
+        }
+    }
 }
