@@ -3,8 +3,14 @@ import Grid from '@mui/material/Unstable_Grid2'
 import EditIcon from '@mui/icons-material/Edit'
 import LinkIcon from '@mui/icons-material/Link'
 import DeleteIcon from '@mui/icons-material/Delete'
+import ApiInstance from '../../services/ApiInstance'
 
 function WishCardList (props) {
+  const handleDelete = (id) => {
+    ApiInstance.delete(`/wishes/${id}`)
+      .then(() => props.fetchWishes())
+  }
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -41,10 +47,10 @@ function WishCardList (props) {
                     <IconButton>
                       <EditIcon />
                     </IconButton>
-                    <IconButton>
+                    <IconButton component='a' href={wish.url} target='_blank'>
                       <LinkIcon />
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={() => handleDelete(wish.id)}>
                       <DeleteIcon />
                     </IconButton>
                   </CardActions>
