@@ -37,20 +37,9 @@ public class WishResource {
                 .body(getResponse(request, Map.of("result", result), "Wish created.", CREATED));
     }
 
-    @GetMapping
-    public ResponseEntity<Page<WishEntity>> getContacts(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                        @RequestParam(value = "size", defaultValue = "10") int size) {
-        return ResponseEntity.ok().body(wishService.getAllWishes(page, size));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<WishEntity> getWish(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok().body(wishService.getWish(id));
-    }
-
-    @GetMapping(path = "/image/{filename}", produces = { IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE })
-    public byte[] getPhoto(@PathVariable("filename") String filename) throws IOException {
-        return Files.readAllBytes(Paths.get(PHOTO_DIRECTORY + "/wishes/" + filename));
     }
 
     @GetMapping(path = "/wishlist/{id}")
