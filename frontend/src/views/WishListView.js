@@ -44,7 +44,7 @@ function WishListView (props) {
     url: ''
   })
 
-  const [photoFile, setPhotoFile] = useState(null)
+  const [imageFile, setImageFile] = useState(null)
 
   const handleInputChange = ({ target }) => {
     setFormState({ ...formState, [target.name]: target.value })
@@ -64,33 +64,40 @@ function WishListView (props) {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const formData = new FormData()
-    formData.append('title', formState.title)
-    formData.append('description', formState.description)
-    formData.append('url', formState.url)
-    formData.append('wishlistId', wishlistId)
-    formData.append('photoFile', photoFile)
 
-    ApiInstance.post('/wishes/create', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+    ApiInstance.post('/wishes/create', {
+      title: formState.title,
+      description: formState.description,
+      url: formState.url,
+      wishlistId: wishlistId
     })
-      .then(() => {
-        setFormState({
-          title: '',
-          description: '',
-          url: ''
+      .then((res) => {
+        console.log('Wish creation:', res)
+
+        const formData = new FormData()
+        formData.append('wishId', res.data.data.result.wishId)
+        formData.append('image', imageFile)
+
+        ApiInstance.put('/image/wish/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
         })
-        setPhotoFile(null)
-        fetchWishes()
-        setModalOpen(false)
+          .then((res) => {
+            console.log('Image upload:', res)
+
+            setFormState({
+              title: '',
+              description: '',
+              url: ''
+            })
+            setImageFile(null)
+            fetchWishes()
+            setModalOpen(false)
+          })
       })
   }
 
   useEffect(() => {
     fetchWishes()
-    console.log(wishes)
   }, [])
 
   return (
@@ -122,7 +129,7 @@ function WishListView (props) {
               Add a Wish
             </Typography>
             <Box sx={{ display: 'flex', minWidth: '60dvw' }}>
-              <ImageUpload setPhotoFile={setPhotoFile} />
+              <ImageUpload setImageFile={setImageFile} />
               <Box sx={{ alignItems: 'center', display: 'flex', flexGrow: 1, flexDirection: 'column', flex: 2, ml: 3 }}>
                 <TextField
                   required

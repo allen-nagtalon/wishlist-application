@@ -15,7 +15,7 @@ function WishCardList (props) {
                 <Card sx={{ borderRadius: 3 }}>
                   <CardMedia
                     component='img'
-                    image={wish.photoUrl}
+                    image={wish.imageUrl}
                     sx={{
                       height: '200px'
                     }}

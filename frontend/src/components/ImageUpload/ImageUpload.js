@@ -22,7 +22,7 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 const ImageUpload = (props) => {
-  const [photoUrl, setPhotoUrl] = useState(defaultGiftIcon)
+  const [imageUrl, setImageUrl] = useState(defaultGiftIcon)
 
   const handleUploadClick = (event) => {
     console.log(event)
@@ -33,10 +33,10 @@ const ImageUpload = (props) => {
       reader.readAsDataURL(file)
 
       reader.onloadend = (e) => {
-        setPhotoUrl(e.target.result)
+        setImageUrl(e.target.result)
       }
 
-      props.setPhotoFile(file)
+      props.setImageFile(file)
     }
   }
 
@@ -52,7 +52,7 @@ const ImageUpload = (props) => {
             type='file'
             onChange={handleUploadClick}
           />
-          <Image src={photoUrl} />
+          <Image src={imageUrl} />
         </ButtonBase>
       </Box>
     </>
