@@ -38,9 +38,4 @@ public class WishlistResource {
                 .created(URI.create("/wishlist/id"))
                 .body(getResponse(request, Map.of("result", result), "Wishlist created.", CREATED));
     }
-
-    @PutMapping("/photo")
-    public ResponseEntity<String> uploadPhoto(@RequestParam("id") Long id, @RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok().body(wishlistService.uploadPhoto(id, file));
-    }
 }
