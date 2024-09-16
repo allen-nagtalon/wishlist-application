@@ -38,17 +38,15 @@ public class ImageResource {
                 .body(getResponse(request, emptyMap(), "Image has been uploaded for wish", OK));
     }
 
-    @PutMapping("/wishlist")
+    @PutMapping("/wishlist/upload")
     public ResponseEntity<Response> uploadWishlistPhoto(@RequestParam("image") MultipartFile image, HttpServletRequest request) {
-
         return ResponseEntity
                 .ok()
                 .body(getResponse(request, emptyMap(), "Image has been uploaded for wishlist", OK));
     }
 
-    @PutMapping("/user")
+    @PutMapping("/user/upload")
     public ResponseEntity<Response> uploadUserPhoto(@RequestParam("image") MultipartFile image, HttpServletRequest request) {
-
         return ResponseEntity
                 .ok()
                 .body(getResponse(request, emptyMap(), "Image has been uploaded for user", OK));
