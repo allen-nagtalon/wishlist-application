@@ -22,6 +22,8 @@ public class WishEntity extends Auditable {
 
     private String title;
     private String description;
+
+    @Lob
     private String url;
     private String imageUrl;
 
