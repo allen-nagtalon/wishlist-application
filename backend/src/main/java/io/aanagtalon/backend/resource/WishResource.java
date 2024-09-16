@@ -5,13 +5,10 @@ import io.aanagtalon.backend.dto.WishRequest;
 import io.aanagtalon.backend.entity.WishEntity;
 import io.aanagtalon.backend.service.WishService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
@@ -21,6 +18,7 @@ import java.util.Map;
 
 import static io.aanagtalon.backend.constant.Constants.PHOTO_DIRECTORY;
 import static io.aanagtalon.backend.utils.RequestUtils.getResponse;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
@@ -31,10 +29,12 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 public class WishResource {
     private final WishService wishService;
 
-    @PostMapping
-    public ResponseEntity<WishEntity> createWish(@ModelAttribute WishRequest request) {
-        var wish = wishService.createWish(request.getTitle(), request.getDescription(), request.getUrl(), request.getWishlistId(), request.getFile());
-        return ResponseEntity.created(URI.create("/wishes/id")).body(wish);
+    @PostMapping("/create")
+    public ResponseEntity<Response> createWish(@RequestBody WishRequest wish, HttpServletRequest request) {
+        var result = wishService.createWish(wish.getTitle(), wish.getDescription(), wish.getUrl(), wish.getWishlistId());
+        return ResponseEntity
+                .created(URI.create("/wish/id"))
+                .body(getResponse(request, Map.of("result", result), "Wish created.", CREATED));
     }
 
     @GetMapping
@@ -48,14 +48,9 @@ public class WishResource {
         return ResponseEntity.ok().body(wishService.getWish(id));
     }
 
-    @PutMapping("/photo")
-    public ResponseEntity<String> uploadPhoto(@RequestParam("id") Long id, @RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok().body(wishService.uploadPhoto(id, file));
-    }
-
     @GetMapping(path = "/image/{filename}", produces = { IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE })
     public byte[] getPhoto(@PathVariable("filename") String filename) throws IOException {
-        return Files.readAllBytes(Paths.get(PHOTO_DIRECTORY + filename));
+        return Files.readAllBytes(Paths.get(PHOTO_DIRECTORY + "/wishes/" + filename));
     }
 
     @GetMapping(path = "/wishlist/{id}")

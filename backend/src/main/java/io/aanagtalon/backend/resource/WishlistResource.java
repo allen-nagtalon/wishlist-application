@@ -14,7 +14,6 @@ import java.net.URI;
 import java.util.Map;
 
 import static io.aanagtalon.backend.utils.RequestUtils.getResponse;
-import static java.util.Collections.emptyMap;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -34,10 +33,10 @@ public class WishlistResource {
     @PostMapping()
     public ResponseEntity<Response> createWishlist(@RequestHeader(name = "Authorization") String token, @RequestBody WishlistRequest wishlist, HttpServletRequest request) {
         var ownerId = jwtService.extractUserId(token.substring(4));
-        wishlistService.createWishlist(wishlist.getTitle(), wishlist.getDescription(), ownerId);
+        var result = wishlistService.createWishlist(wishlist.getTitle(), wishlist.getDescription(), ownerId);
         return ResponseEntity
                 .created(URI.create("/wishlist/id"))
-                .body(getResponse(request, emptyMap(), "Wishlist created.", CREATED));
+                .body(getResponse(request, Map.of("result", result), "Wishlist created.", CREATED));
     }
 
     @PutMapping("/photo")

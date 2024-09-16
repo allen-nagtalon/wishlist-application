@@ -10,7 +10,7 @@ public interface WishService {
     Page<WishEntity> getAllWishes(int page, int size);
     List<WishEntity> getWishesByWishlistId(long id);
     WishEntity getWish(Long id);
-    WishEntity createWish(String title, String description, String url, Long wishlistId, MultipartFile file);
+    WishEntity createWish(String title, String description, String url, Long wishlistId);
     void deleteWish(WishEntity wishEntity);
-    String uploadPhoto(Long id, MultipartFile file);
+    String uploadPhoto(String userId, MultipartFile file);
 }

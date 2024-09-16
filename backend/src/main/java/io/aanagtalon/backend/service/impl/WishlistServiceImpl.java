@@ -14,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 
+import static io.aanagtalon.backend.enumeration.ImageType.WISHLIST;
 import static io.aanagtalon.backend.utils.ImageUtils.photoFunction;
+import static io.aanagtalon.backend.utils.WishlistUtils.createNewEntity;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -27,7 +29,7 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public WishlistEntity createWishlist(String title, String description, Long ownerId) {
         var owner = userRepo.findById(ownerId).orElseThrow(() -> new ApiException("User not found"));
-        return wishlistRepo.save(new WishlistEntity(title, description, owner));
+        return wishlistRepo.save(createNewEntity(title, description, owner));
     }
 
     @Override
@@ -44,10 +46,10 @@ public class WishlistServiceImpl implements WishlistService {
     public String uploadPhoto(Long id, MultipartFile file) {
         log.info("Saving photo for wishlist ID: {}", id);
         var wishlistEntity = getWishlistById(id).orElseThrow(() -> new ApiException("Wishlist could not be found."));
-        String photoUrl = photoFunction.apply(id.toString(), file);
-        wishlistEntity.setPhotoUrl(photoUrl);
+        String imageUrl = photoFunction(wishlistEntity.getWishlistId(), file, WISHLIST.name());
+        wishlistEntity.setImageUrl(imageUrl);
         wishlistRepo.save(wishlistEntity);
-        return photoUrl;
+        return imageUrl;
     }
 
 }

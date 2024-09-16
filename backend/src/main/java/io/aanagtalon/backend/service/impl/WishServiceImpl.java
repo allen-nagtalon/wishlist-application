@@ -5,7 +5,6 @@ import io.aanagtalon.backend.entity.exception.ApiException;
 import io.aanagtalon.backend.repo.WishRepo;
 import io.aanagtalon.backend.repo.WishlistRepo;
 import io.aanagtalon.backend.service.WishService;
-import io.aanagtalon.backend.utils.ImageUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static io.aanagtalon.backend.enumeration.ImageType.WISH;
 import static io.aanagtalon.backend.utils.ImageUtils.photoFunction;
-import static io.aanagtalon.backend.utils.WishUtils.createNewWishEntity;
+import static io.aanagtalon.backend.utils.WishUtils.createNewEntity;
 
 @Service
 @Slf4j
@@ -41,21 +41,16 @@ public class WishServiceImpl implements WishService {
         return wishRepo.findById(id).orElseThrow(() -> new RuntimeException("Contact not found"));
     }
 
-    public WishEntity createWish(String title, String description, String url, Long wishlistId, MultipartFile file) {
+    public WishEntity createWish(String title, String description, String url, Long wishlistId) {
         // Create new wish entity with given fields
-        var wish = wishRepo.save(createNewWishEntity(title, description, url));
+        var wish = wishRepo.save(createNewEntity(title, description, url));
 
         // Fetch related wishlist by ID
         var wishlist = wishlistRepo.findById(wishlistId).orElseThrow(() -> new ApiException("Wishlist of ID " + wishlistId + "cannot be found"));
 
         // Add wish and wishlist to each other's respective sets
-        wish.addToWishlist(wishlist);
         wishlist.addWishToWishlist(wish);
-
-        // If image file field is not null, upload photo and apply url to wish entity
-        if (file != null) {
-            wish.setPhotoUrl(photoFunction.apply(wish.getId().toString(), file));
-        } // ADD ELSE FOR DEFAULT PHOTO
+        wishlistRepo.save(wishlist);
 
         // Return saved wish entity
         return wishRepo.save(wish);
@@ -65,12 +60,16 @@ public class WishServiceImpl implements WishService {
         // ADD LATER
     }
 
-    public String uploadPhoto(Long id, MultipartFile file) {
-        log.info("Saving photo for wish ID: {}", id);
-        WishEntity wishEntity = getWish(id);
-        String photoUrl = photoFunction.apply(id.toString(), file);
-        wishEntity.setPhotoUrl(photoUrl);
+    public String uploadPhoto(String wishId, MultipartFile file) {
+        log.info("Saving photo for wish ID: {}", wishId);
+        WishEntity wishEntity = getWishByWishId(wishId);
+        String photoUrl = photoFunction(wishEntity.getWishId(), file, WISH.toString());
+        wishEntity.setImageUrl(photoUrl);
         wishRepo.save(wishEntity);
         return photoUrl;
+    }
+
+    private WishEntity getWishByWishId(String wishId) {
+        return wishRepo.findByWishId(wishId).orElseThrow(() -> new ApiException("Wish cannot be found by wishId: " + wishId));
     }
 }

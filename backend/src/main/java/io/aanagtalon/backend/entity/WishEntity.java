@@ -3,10 +3,7 @@ package io.aanagtalon.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,28 +11,21 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Table(name = "wishes")
 public class WishEntity extends Auditable {
+    @Column(updatable = false, unique = true, nullable = false)
+    private String wishId;
 
     private String title;
     private String description;
     private String url;
-    private String photoUrl;
+    private String imageUrl;
 
-    @ManyToMany(mappedBy = "wishes")
+    @ManyToMany(mappedBy = "wishes", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JsonIgnore
     private Set<WishlistEntity> wishlists = new HashSet<>();
-
-    public WishEntity(String title, String description, String url) {
-        this.title = title;
-        this.description = description;
-        this.url = url;
-    }
-
-    public void addToWishlist(WishlistEntity wishlist) {
-        wishlists.add(wishlist);
-    }
 }

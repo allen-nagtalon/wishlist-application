@@ -1,8 +1,6 @@
 package io.aanagtalon.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,11 +17,14 @@ import java.util.Set;
 @Table(name = "wishlists")
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class WishlistEntity extends Auditable {
+    @Column(updatable = false, unique = true, nullable = false)
+    private String wishlistId;
+
     @Column(nullable = false)
     private String title;
 
     private String description;
-    private String photoUrl;
+    private String imageUrl;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JsonIgnore
@@ -37,12 +38,6 @@ public class WishlistEntity extends Auditable {
     )
     @JsonIgnore
     private Set<WishEntity> wishes;
-
-    public WishlistEntity(String title, String description, UserEntity owner) {
-        this.title = title;
-        this.description = description;
-        this.owner = owner;
-    }
 
     public void addWishToWishlist(WishEntity wish) {
         wishes.add(wish);
