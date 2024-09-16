@@ -33,7 +33,7 @@ public class UserEntity extends Auditable {
     private boolean enabled;
     private int loginAttempts;
   
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<WishlistEntity> wishlists;
 }

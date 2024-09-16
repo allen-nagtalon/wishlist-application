@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -19,6 +18,4 @@ public class WishRequest {
 
     @NotEmpty(message = "Wish must be assigned to a wishlist")
     private Long wishlistId;
-
-    private MultipartFile file;
 }

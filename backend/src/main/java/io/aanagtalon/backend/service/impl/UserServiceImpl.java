@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void verifyAccountKey(String key) {
         var confirmationEntity = (ConfirmationEntity) getUserConfirmation(key);
-        var userEntity = getUserEntityByEmail(confirmationEntity.getUserEntity().getEmail());
+        var userEntity = getUserByEmail(confirmationEntity.getUserEntity().getEmail());
         userEntity.setEnabled(true);
         userRepo.save(userEntity);
         confirmationRepo.delete(confirmationEntity);
@@ -67,11 +67,6 @@ public class UserServiceImpl implements UserService {
     public CredentialEntity getUserCredentialById(Long userId) {
         var credentialById = credentialRepo.getCredentialByUserEntityId(userId);
         return credentialById.orElseThrow(() -> new ApiException("Unable to find user credential"));
-    }
-
-    private UserEntity getUserEntityByEmail(String email) {
-        var userByEmail = userRepo.findByEmailIgnoreCase(email);
-        return userByEmail.orElseThrow(() -> new ApiException("User not found"));
     }
 
     private ConfirmationEntity getUserConfirmation(String key) {

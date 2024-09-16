@@ -9,6 +9,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Optional;
+
+import static io.aanagtalon.backend.enumeration.ImageType.WISHLIST;
+import static io.aanagtalon.backend.utils.ImageUtils.photoFunction;
+import static io.aanagtalon.backend.utils.WishlistUtils.createNewEntity;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -19,8 +27,29 @@ public class WishlistServiceImpl implements WishlistService {
     private final WishlistRepo wishlistRepo;
 
     @Override
-    public WishlistEntity createWishlist(String title, Long ownerId) {
+    public WishlistEntity createWishlist(String title, String description, Long ownerId) {
         var owner = userRepo.findById(ownerId).orElseThrow(() -> new ApiException("User not found"));
-        return wishlistRepo.save(new WishlistEntity(title, owner));
+        return wishlistRepo.save(createNewEntity(title, description, owner));
     }
+
+    @Override
+    public Optional<WishlistEntity> getWishlistById(Long id) {
+        return wishlistRepo.findById(id);
+    }
+
+    @Override
+    public List<WishlistEntity> getWishlistsByOwnerId(long ownerId) {
+        return wishlistRepo.findByOwner_Id(ownerId);
+    }
+
+    @Override
+    public String uploadPhoto(Long id, MultipartFile file) {
+        log.info("Saving photo for wishlist ID: {}", id);
+        var wishlistEntity = getWishlistById(id).orElseThrow(() -> new ApiException("Wishlist could not be found."));
+        String imageUrl = photoFunction(wishlistEntity.getWishlistId(), file, WISHLIST.name());
+        wishlistEntity.setImageUrl(imageUrl);
+        wishlistRepo.save(wishlistEntity);
+        return imageUrl;
+    }
+
 }

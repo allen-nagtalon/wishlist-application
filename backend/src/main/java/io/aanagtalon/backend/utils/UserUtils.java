@@ -1,8 +1,6 @@
 package io.aanagtalon.backend.utils;
 
-import io.aanagtalon.backend.entity.CredentialEntity;
 import io.aanagtalon.backend.entity.UserEntity;
-import org.springframework.beans.BeanUtils;
 
 import java.util.UUID;
 

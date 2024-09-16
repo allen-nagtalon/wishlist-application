@@ -1,28 +1,46 @@
 package io.aanagtalon.backend.resource;
 
+import io.aanagtalon.backend.domain.Response;
 import io.aanagtalon.backend.dto.WishlistRequest;
-import io.aanagtalon.backend.entity.WishlistEntity;
+import io.aanagtalon.backend.service.JwtService;
 import io.aanagtalon.backend.service.WishlistService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
+import java.util.Map;
+
+import static io.aanagtalon.backend.utils.RequestUtils.getResponse;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/wishlist")
 @RequiredArgsConstructor
 public class WishlistResource {
     private final WishlistService wishlistService;
+    private final JwtService jwtService;
 
-    @PostMapping("/create")
-    public ResponseEntity<WishlistEntity> createWishlist(@RequestBody WishlistRequest request) {
-        return ResponseEntity
-                .created(URI.create("/wishlist/id"))
-                .body(wishlistService.createWishlist(request.getTitle(), request.getOwnerId()));
+    @GetMapping
+    public ResponseEntity<Response> getUserWishlists(@RequestHeader(name = "Authorization") String token, HttpServletRequest request) {
+        var ownerId = jwtService.extractUserId(token.substring(4));
+        return ResponseEntity.ok().body(getResponse(request, Map.of("wishlists", wishlistService.getWishlistsByOwnerId(ownerId)), "Wishlists of user ID " + ownerId + " fetched.", OK));
     }
 
+    @PostMapping()
+    public ResponseEntity<Response> createWishlist(@RequestHeader(name = "Authorization") String token, @RequestBody WishlistRequest wishlist, HttpServletRequest request) {
+        var ownerId = jwtService.extractUserId(token.substring(4));
+        var result = wishlistService.createWishlist(wishlist.getTitle(), wishlist.getDescription(), ownerId);
+        return ResponseEntity
+                .created(URI.create("/wishlist/id"))
+                .body(getResponse(request, Map.of("result", result), "Wishlist created.", CREATED));
+    }
+
+    @PutMapping("/photo")
+    public ResponseEntity<String> uploadPhoto(@RequestParam("id") Long id, @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok().body(wishlistService.uploadPhoto(id, file));
+    }
 }

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ApiInstance from '../services/ApiInstance'
 
-function RegisterPage () {
+function RegisterView () {
   const [username, setUsername] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -68,6 +68,7 @@ function RegisterPage () {
                   value={username}
                   onInput={e => setUsername(e.target.value)}
                   autoComplete='username'
+                  autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -79,7 +80,6 @@ function RegisterPage () {
                   label='First Name'
                   value={firstName}
                   onInput={e => setFirstName(e.target.value)}
-                  autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -91,7 +91,6 @@ function RegisterPage () {
                   label='Last Name'
                   value={lastName}
                   onInput={e => setLastName(e.target.value)}
-                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
@@ -135,7 +134,7 @@ function RegisterPage () {
             </Button>
           </Box>
           <Typography variant='body2' sx={{ mt: 2 }}>
-            <Link href='#'>
+            <Link to='/login'>
               Already have an account?
             </Link>
           </Typography>
@@ -145,4 +144,4 @@ function RegisterPage () {
   )
 }
 
-export default RegisterPage
+export default RegisterView

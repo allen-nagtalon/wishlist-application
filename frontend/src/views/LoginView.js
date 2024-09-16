@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ApiInstance from '../services/ApiInstance'
 
-function LoginPage () {
+function LoginView () {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
 
@@ -21,8 +21,8 @@ function LoginPage () {
       .then((res) => {
         window.localStorage.setItem('access_token', res.data.data.token)
         ApiInstance.defaults.headers.Authorization = window.localStorage.getItem('access_token')
-        navigate('/')
       })
+      .then(navigate('/'))
   }
 
   return (
@@ -92,7 +92,7 @@ function LoginPage () {
           </Typography>
           <Divider variant='middle' flexItem>or</Divider>
           <Typography variant='body2' sx={{ my: 2 }}>
-            <Link href='#'>
+            <Link to='/register'>
               Don't have an account? Sign Up
             </Link>
           </Typography>
@@ -102,4 +102,4 @@ function LoginPage () {
   )
 }
 
-export default LoginPage
+export default LoginView
