@@ -43,4 +43,8 @@ public class WishlistEntity extends Auditable {
         wishes.add(wish);
     }
 
+    public void removeWish(WishEntity wish) {
+        this.wishes.remove(wish);
+        wish.getWishlists().remove(this);
+    }
 }

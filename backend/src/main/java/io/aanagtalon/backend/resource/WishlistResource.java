@@ -8,12 +8,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.util.Map;
 
 import static io.aanagtalon.backend.utils.RequestUtils.getResponse;
+import static java.util.Collections.emptyMap;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -37,5 +37,12 @@ public class WishlistResource {
         return ResponseEntity
                 .created(URI.create("/wishlist/id"))
                 .body(getResponse(request, Map.of("result", result), "Wishlist created.", CREATED));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response> deleteWishlist(@PathVariable(value = "id") Long id, HttpServletRequest request) {
+        wishlistService.deleteWishlist(id);
+        return ResponseEntity.ok()
+                .body(getResponse(request, emptyMap(), "Wishlist id " + id + " has been deleted", OK));
     }
 }
