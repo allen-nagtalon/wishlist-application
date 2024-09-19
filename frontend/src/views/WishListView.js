@@ -1,13 +1,15 @@
-import { Box, Button, Container, Paper, styled, TextField, Typography } from '@mui/material'
+import { Box, Button, Container, IconButton, Paper, styled, TextField, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { Modal as BaseModal } from '@mui/base/Modal'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import WishCardList from '../components/WishCardList/WishCardList'
 import ApiInstance from '../services/ApiInstance'
 import ImageUpload from '../components/ImageUpload/ImageUpload'
 
 function WishListView (props) {
+  const navigate = useNavigate()
   const { wishlistId } = useParams()
   const [wishes, setWishes] = useState(null)
 
@@ -21,6 +23,14 @@ function WishListView (props) {
 
   const handleInputChange = ({ target }) => {
     setFormState({ ...formState, [target.name]: target.value })
+  }
+
+  const handleDelete = () => {
+    ApiInstance.delete(`/wishlist/${wishlistId}`)
+      .then((res) => {
+        console.log(res)
+        navigate('/wishlists')
+      })
   }
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -75,9 +85,14 @@ function WishListView (props) {
 
   return (
     <Container maxWidth='lg' sx={{ pt: 10, flexGrow: 1 }}>
-      <Typography variant='h4' sx={{ mb: 3 }}>
-        Jurin's Wishlist
-      </Typography>
+      <Box display='flex' sx={{ mb: 3 }}>
+        <Typography variant='h4' sx={{ mr: 2 }}>
+          Jurin's Wishlist
+        </Typography>
+        <IconButton onClick={handleDelete}>
+          <DeleteIcon />
+        </IconButton>
+      </Box>
       <Box sx={{ mb: 3 }}>
         <Button
           component='label'
