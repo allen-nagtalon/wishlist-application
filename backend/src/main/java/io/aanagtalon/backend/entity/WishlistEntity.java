@@ -30,21 +30,11 @@ public class WishlistEntity extends Auditable {
     @JsonIgnore
     private UserEntity owner;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
-    @JoinTable(
-            name = "wishlist_items",
-            joinColumns = @JoinColumn(name = "wishlist_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "wish_id", referencedColumnName = "id")
-    )
+    @OneToMany(mappedBy = "wishlist", orphanRemoval = true)
     @JsonIgnore
     private Set<WishEntity> wishes;
 
     public void addWishToWishlist(WishEntity wish) {
         wishes.add(wish);
-    }
-
-    public void removeWish(WishEntity wish) {
-        this.wishes.remove(wish);
-        wish.getWishlists().remove(this);
     }
 }

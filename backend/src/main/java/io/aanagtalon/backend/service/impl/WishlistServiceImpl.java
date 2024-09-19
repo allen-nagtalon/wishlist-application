@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 import static io.aanagtalon.backend.enumeration.ImageType.WISHLIST;
 import static io.aanagtalon.backend.utils.ImageUtils.photoFunction;
@@ -58,14 +57,6 @@ public class WishlistServiceImpl implements WishlistService {
     public void deleteWishlist(Long id) {
         // Fetch wishlist by the given id
         var wishlist = getWishlistById(id);
-
-        // Iterate through wishlists wishes and remove their association
-        for (WishEntity wish : wishlist.getWishes()) {
-            wishlist.removeWish(wish);
-
-            // If the wish has no wishlist associations, delete the wish
-            if (wish.getWishlists().isEmpty()) wishRepo.delete(wish);
-        }
 
         // Delete the wishlist
         wishlistRepo.delete(wishlist);
