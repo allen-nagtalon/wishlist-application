@@ -11,6 +11,7 @@ import ImageUpload from '../components/ImageUpload/ImageUpload'
 function WishListView (props) {
   const navigate = useNavigate()
   const { wishlistId } = useParams()
+  const [wishlist, setWishlist] = useState(null)
   const [wishes, setWishes] = useState(null)
 
   const [formState, setFormState] = useState({
@@ -42,6 +43,13 @@ function WishListView (props) {
     ApiInstance.get(`/wishes/wishlist/${wishlistId}`)
       .then((res) => {
         setWishes(res.data.data.wishes)
+      })
+  }
+
+  const fetchWishlist = () => {
+    ApiInstance.get(`/wishlist/${wishlistId}`)
+      .then((res) => {
+        setWishlist(res.data.data.wishlist)
       })
   }
 
@@ -80,6 +88,7 @@ function WishListView (props) {
   }
 
   useEffect(() => {
+    fetchWishlist()
     fetchWishes()
   }, [])
 
@@ -87,12 +96,15 @@ function WishListView (props) {
     <Container maxWidth='lg' sx={{ pt: 10, flexGrow: 1 }}>
       <Box display='flex' sx={{ mb: 3 }}>
         <Typography variant='h4' sx={{ mr: 2 }}>
-          Jurin's Wishlist
+          {wishlist.title}
         </Typography>
         <IconButton onClick={handleDelete}>
           <DeleteIcon />
         </IconButton>
       </Box>
+      <Typography sx={{ mb: 3 }}>
+        {wishlist.description}
+      </Typography>
       <Box sx={{ mb: 3 }}>
         <Button
           component='label'

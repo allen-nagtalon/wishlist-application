@@ -30,6 +30,11 @@ public class WishlistResource {
         return ResponseEntity.ok().body(getResponse(request, Map.of("wishlists", wishlistService.getWishlistsByOwnerId(ownerId)), "Wishlists of user ID " + ownerId + " fetched.", OK));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> getWishlistInfo(@PathVariable(value = "id") Long id, HttpServletRequest request) {
+        return ResponseEntity.ok().body(getResponse(request, Map.of("wishlist", wishlistService.getWishlistById(id)), "Wishlist ID " + id + " retrieved", OK));
+    }
+
     @PostMapping()
     public ResponseEntity<Response> createWishlist(@RequestHeader(name = "Authorization") String token, @RequestBody WishlistRequest wishlist, HttpServletRequest request) {
         var ownerId = jwtService.extractUserId(token.substring(4));
