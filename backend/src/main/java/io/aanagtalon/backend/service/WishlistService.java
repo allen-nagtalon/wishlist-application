@@ -8,7 +8,8 @@ import java.util.Optional;
 
 public interface WishlistService {
     WishlistEntity createWishlist(String title, String description, Long ownerId);
-    Optional<WishlistEntity> getWishlistById(Long id);
+    WishlistEntity getWishlistById(Long id);
     List<WishlistEntity> getWishlistsByOwnerId(long ownerId);
     String uploadPhoto(Long id, MultipartFile file);
+    void deleteWishlist(Long id);
 }

@@ -7,21 +7,6 @@ import AddIcon from '@mui/icons-material/Add'
 import ApiInstance from '../services/ApiInstance'
 import defaultGiftIcon from '../assets/default-gift.png'
 
-const testWishlists = [
-  {
-    title: 'Jurin\'s Wishlist',
-    photoUrl: 'https://pbs.twimg.com/media/Fz3FyK5aMAAdBqv?format=jpg&name=large',
-    description: 'This is Jurin\'s wishlist. Her birthday is on June 19, 2002. Japanese rapper and model who has risen to fame as the leader of hip hop and R&B girl group XG. She made her debut with the group in March 2022.',
-    private: true
-  },
-  {
-    title: 'Maya\'s Wishlist',
-    photoUrl: 'https://m.media-amazon.com/images/I/61pMDn6VAtL._AC_UF894,1000_QL80_.jpg',
-    description: 'This is Maya\'s wishlist',
-    private: false
-  }
-]
-
 function WishlistListView () {
   const [wishlists, setWishlists] = useState(null)
 

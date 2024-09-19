@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -27,14 +26,9 @@ public class WishEntity extends Auditable {
     private String url;
     private String imageUrl;
 
-    @ManyToMany(mappedBy = "wishes", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wishlist_items", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private Set<WishlistEntity> wishlists = new HashSet<>();
-
-    @PreRemove
-    private void removeWishlistAssociations() {
-        for (WishlistEntity wishlist : this.wishlists) {
-            wishlist.getWishes().remove(this);
-        }
-    }
+    private WishlistEntity wishlist;
 }

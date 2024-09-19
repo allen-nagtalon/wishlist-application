@@ -35,7 +35,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishEntity> getWishesByWishlistId(long id) {
-        return wishRepo.findByWishlists_Id(id);
+        return wishRepo.findByWishlist_Id(id);
     }
 
     public Optional<WishEntity> getWish(Long id) {
@@ -43,18 +43,11 @@ public class WishServiceImpl implements WishService {
     }
 
     public WishEntity createWish(String title, String description, String url, Long wishlistId) {
-        // Create new wish entity with given fields
-        var wish = wishRepo.save(createNewEntity(title, description, url));
-
         // Fetch related wishlist by ID
         var wishlist = wishlistRepo.findById(wishlistId).orElseThrow(() -> new ApiException("Wishlist of ID " + wishlistId + "cannot be found"));
 
-        // Add wish and wishlist to each other's respective sets
-        wishlist.addWishToWishlist(wish);
-        wishlistRepo.save(wishlist);
-
-        // Return saved wish entity
-        return wishRepo.save(wish);
+        // Create new wish entity with given fields and return
+        return wishRepo.save(createNewEntity(title, description, url, wishlist));
     }
 
     public void deleteWish(Long id) {

@@ -8,12 +8,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.util.Map;
 
 import static io.aanagtalon.backend.utils.RequestUtils.getResponse;
+import static java.util.Collections.emptyMap;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -30,6 +30,11 @@ public class WishlistResource {
         return ResponseEntity.ok().body(getResponse(request, Map.of("wishlists", wishlistService.getWishlistsByOwnerId(ownerId)), "Wishlists of user ID " + ownerId + " fetched.", OK));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> getWishlistInfo(@PathVariable(value = "id") Long id, HttpServletRequest request) {
+        return ResponseEntity.ok().body(getResponse(request, Map.of("wishlist", wishlistService.getWishlistById(id)), "Wishlist ID " + id + " retrieved", OK));
+    }
+
     @PostMapping()
     public ResponseEntity<Response> createWishlist(@RequestHeader(name = "Authorization") String token, @RequestBody WishlistRequest wishlist, HttpServletRequest request) {
         var ownerId = jwtService.extractUserId(token.substring(4));
@@ -39,8 +44,10 @@ public class WishlistResource {
                 .body(getResponse(request, Map.of("result", result), "Wishlist created.", CREATED));
     }
 
-    @PutMapping("/photo")
-    public ResponseEntity<String> uploadPhoto(@RequestParam("id") Long id, @RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok().body(wishlistService.uploadPhoto(id, file));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response> deleteWishlist(@PathVariable(value = "id") Long id, HttpServletRequest request) {
+        wishlistService.deleteWishlist(id);
+        return ResponseEntity.ok()
+                .body(getResponse(request, emptyMap(), "Wishlist id " + id + " has been deleted", OK));
     }
 }

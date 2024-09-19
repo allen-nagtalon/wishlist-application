@@ -1,8 +1,10 @@
 package io.aanagtalon.backend.service.impl;
 
+import io.aanagtalon.backend.entity.WishEntity;
 import io.aanagtalon.backend.entity.WishlistEntity;
 import io.aanagtalon.backend.entity.exception.ApiException;
 import io.aanagtalon.backend.repo.UserRepo;
+import io.aanagtalon.backend.repo.WishRepo;
 import io.aanagtalon.backend.repo.WishlistRepo;
 import io.aanagtalon.backend.service.WishlistService;
 import jakarta.transaction.Transactional;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 import static io.aanagtalon.backend.enumeration.ImageType.WISHLIST;
 import static io.aanagtalon.backend.utils.ImageUtils.photoFunction;
@@ -24,6 +25,7 @@ import static io.aanagtalon.backend.utils.WishlistUtils.createNewEntity;
 @Slf4j
 public class WishlistServiceImpl implements WishlistService {
     private final UserRepo userRepo;
+    private final WishRepo wishRepo;
     private final WishlistRepo wishlistRepo;
 
     @Override
@@ -32,9 +34,8 @@ public class WishlistServiceImpl implements WishlistService {
         return wishlistRepo.save(createNewEntity(title, description, owner));
     }
 
-    @Override
-    public Optional<WishlistEntity> getWishlistById(Long id) {
-        return wishlistRepo.findById(id);
+    public WishlistEntity getWishlistById(Long id) {
+        return wishlistRepo.findById(id).orElseThrow(() -> new ApiException("Wishlist id " + id + " not found"));
     }
 
     @Override
@@ -45,11 +46,19 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public String uploadPhoto(Long id, MultipartFile file) {
         log.info("Saving photo for wishlist ID: {}", id);
-        var wishlistEntity = getWishlistById(id).orElseThrow(() -> new ApiException("Wishlist could not be found."));
+        var wishlistEntity = getWishlistById(id);
         String imageUrl = photoFunction(wishlistEntity.getWishlistId(), file, WISHLIST.name());
         wishlistEntity.setImageUrl(imageUrl);
         wishlistRepo.save(wishlistEntity);
         return imageUrl;
     }
 
+    @Override
+    public void deleteWishlist(Long id) {
+        // Fetch wishlist by the given id
+        var wishlist = getWishlistById(id);
+
+        // Delete the wishlist
+        wishlistRepo.delete(wishlist);
+    }
 }

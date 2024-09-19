@@ -1,14 +1,17 @@
-import { Box, Button, Container, Paper, styled, TextField, Typography } from '@mui/material'
+import { Box, Button, Container, IconButton, Paper, styled, TextField, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { Modal as BaseModal } from '@mui/base/Modal'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import WishCardList from '../components/WishCardList/WishCardList'
 import ApiInstance from '../services/ApiInstance'
 import ImageUpload from '../components/ImageUpload/ImageUpload'
 
 function WishListView (props) {
+  const navigate = useNavigate()
   const { wishlistId } = useParams()
+  const [wishlist, setWishlist] = useState(null)
   const [wishes, setWishes] = useState(null)
 
   const [formState, setFormState] = useState({
@@ -23,15 +26,28 @@ function WishListView (props) {
     setFormState({ ...formState, [target.name]: target.value })
   }
 
+  const handleDelete = () => {
+    ApiInstance.delete(`/wishlist/${wishlistId}`)
+      .then((res) => {
+        navigate('/wishlists')
+      })
+  }
+
   const [modalOpen, setModalOpen] = useState(false)
   const handleOpen = () => setModalOpen(true)
   const handleClose = () => setModalOpen(false)
 
   const fetchWishes = () => {
-    console.log(`Fetching wishes for wishlist ${wishlistId} from API`)
     ApiInstance.get(`/wishes/wishlist/${wishlistId}`)
       .then((res) => {
         setWishes(res.data.data.wishes)
+      })
+  }
+
+  const fetchWishlist = () => {
+    ApiInstance.get(`/wishlist/${wishlistId}`)
+      .then((res) => {
+        setWishlist(res.data.data.wishlist)
       })
   }
 
@@ -46,37 +62,48 @@ function WishListView (props) {
     })
       .then((res) => {
         console.log('Wish creation:', res)
+        if (imageFile != null) {
+          const formData = new FormData()
+          formData.append('wishId', res.data.data.result.wishId)
+          formData.append('image', imageFile)
 
-        const formData = new FormData()
-        formData.append('wishId', res.data.data.result.wishId)
-        formData.append('image', imageFile)
-
-        ApiInstance.put('/image/wish/upload', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        })
-          .then((res) => {
-            console.log('Image upload:', res)
-
-            setFormState({
-              title: '',
-              description: '',
-              url: ''
-            })
-            setImageFile(null)
-            fetchWishes()
-            setModalOpen(false)
+          ApiInstance.put('/image/wish/upload', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
           })
+            .then((res) => {
+              console.log('Image upload:', res)
+            })
+        }
+      })
+      .finally(() => {
+        setFormState({
+          title: '',
+          description: '',
+          url: ''
+        })
+        setImageFile(null)
+        handleClose()
+        fetchWishes()
       })
   }
 
   useEffect(() => {
+    fetchWishlist()
     fetchWishes()
   }, [])
 
   return (
     <Container maxWidth='lg' sx={{ pt: 10, flexGrow: 1 }}>
-      <Typography variant='h4' sx={{ mb: 3 }}>
-        Jurin's Wishlist
+      <Box display='flex' sx={{ mb: 3 }}>
+        <Typography variant='h4' sx={{ mr: 2 }}>
+          {wishlist ? wishlist.title : ''}
+        </Typography>
+        <IconButton onClick={handleDelete}>
+          <DeleteIcon />
+        </IconButton>
+      </Box>
+      <Typography sx={{ mb: 3 }}>
+        {wishlist ? wishlist.description : ''}
       </Typography>
       <Box sx={{ mb: 3 }}>
         <Button
