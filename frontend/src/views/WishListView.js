@@ -29,7 +29,6 @@ function WishListView (props) {
   const handleDelete = () => {
     ApiInstance.delete(`/wishlist/${wishlistId}`)
       .then((res) => {
-        console.log(res)
         navigate('/wishlists')
       })
   }
@@ -39,7 +38,6 @@ function WishListView (props) {
   const handleClose = () => setModalOpen(false)
 
   const fetchWishes = () => {
-    console.log(`Fetching wishes for wishlist ${wishlistId} from API`)
     ApiInstance.get(`/wishes/wishlist/${wishlistId}`)
       .then((res) => {
         setWishes(res.data.data.wishes)
@@ -64,26 +62,28 @@ function WishListView (props) {
     })
       .then((res) => {
         console.log('Wish creation:', res)
+        if (imageFile != null) {
+          const formData = new FormData()
+          formData.append('wishId', res.data.data.result.wishId)
+          formData.append('image', imageFile)
 
-        const formData = new FormData()
-        formData.append('wishId', res.data.data.result.wishId)
-        formData.append('image', imageFile)
-
-        ApiInstance.put('/image/wish/upload', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        })
-          .then((res) => {
-            console.log('Image upload:', res)
-
-            setFormState({
-              title: '',
-              description: '',
-              url: ''
-            })
-            setImageFile(null)
-            fetchWishes()
-            setModalOpen(false)
+          ApiInstance.put('/image/wish/upload', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
           })
+            .then((res) => {
+              console.log('Image upload:', res)
+            })
+        }
+      })
+      .finally(() => {
+        setFormState({
+          title: '',
+          description: '',
+          url: ''
+        })
+        setImageFile(null)
+        handleClose()
+        fetchWishes()
       })
   }
 
@@ -96,14 +96,14 @@ function WishListView (props) {
     <Container maxWidth='lg' sx={{ pt: 10, flexGrow: 1 }}>
       <Box display='flex' sx={{ mb: 3 }}>
         <Typography variant='h4' sx={{ mr: 2 }}>
-          {wishlist.title}
+          {wishlist ? wishlist.title : ''}
         </Typography>
         <IconButton onClick={handleDelete}>
           <DeleteIcon />
         </IconButton>
       </Box>
       <Typography sx={{ mb: 3 }}>
-        {wishlist.description}
+        {wishlist ? wishlist.description : ''}
       </Typography>
       <Box sx={{ mb: 3 }}>
         <Button
