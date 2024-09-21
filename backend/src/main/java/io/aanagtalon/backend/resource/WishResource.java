@@ -7,7 +7,6 @@ import io.aanagtalon.backend.entity.exception.ApiException;
 import io.aanagtalon.backend.service.WishService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
