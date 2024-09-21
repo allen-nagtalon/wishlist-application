@@ -70,8 +70,8 @@ function WishListView (props) {
           ApiInstance.put('/image/wish/upload', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
           })
-            .then((res) => {
-              console.log('Image upload:', res)
+            .then(() => {
+              fetchWishes()
             })
         }
       })
@@ -83,7 +83,6 @@ function WishListView (props) {
         })
         setImageFile(null)
         handleClose()
-        fetchWishes()
       })
   }
 
