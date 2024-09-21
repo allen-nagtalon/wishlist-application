@@ -2,6 +2,7 @@ package io.aanagtalon.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.aanagtalon.backend.utils.ImageUtils;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -31,4 +32,9 @@ public class WishEntity extends Auditable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private WishlistEntity wishlist;
+
+    @PreRemove
+    private void deleteImage() {
+        ImageUtils.deleteImage(getImageUrl());
+    }
 }
