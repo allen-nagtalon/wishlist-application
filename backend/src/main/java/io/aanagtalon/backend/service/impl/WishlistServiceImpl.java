@@ -1,6 +1,5 @@
 package io.aanagtalon.backend.service.impl;
 
-import io.aanagtalon.backend.entity.WishEntity;
 import io.aanagtalon.backend.entity.WishlistEntity;
 import io.aanagtalon.backend.entity.exception.ApiException;
 import io.aanagtalon.backend.repo.UserRepo;

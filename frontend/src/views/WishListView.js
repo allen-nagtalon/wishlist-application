@@ -1,12 +1,11 @@
-import { Box, Button, Container, IconButton, Paper, styled, TextField, Typography } from '@mui/material'
+import { Box, Button, Container, IconButton, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Modal as BaseModal } from '@mui/base/Modal'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import WishCardList from '../components/WishCardList/WishCardList'
 import ApiInstance from '../services/ApiInstance'
-import ImageUpload from '../components/ImageUpload/ImageUpload'
+import CustomModal from '../components/Modal/Modal'
 
 function WishListView (props) {
   const navigate = useNavigate()
@@ -14,28 +13,15 @@ function WishListView (props) {
   const [wishlist, setWishlist] = useState(null)
   const [wishes, setWishes] = useState(null)
 
-  const [formState, setFormState] = useState({
-    title: '',
-    description: '',
-    url: ''
-  })
-
-  const [imageFile, setImageFile] = useState(null)
-
-  const handleInputChange = ({ target }) => {
-    setFormState({ ...formState, [target.name]: target.value })
-  }
-
   const handleDelete = () => {
     ApiInstance.delete(`/wishlist/${wishlistId}`)
-      .then((res) => {
+      .then(() => {
         navigate('/wishlists')
       })
   }
 
   const [modalOpen, setModalOpen] = useState(false)
-  const handleOpen = () => setModalOpen(true)
-  const handleClose = () => setModalOpen(false)
+  const handleModalToggle = () => setModalOpen(!modalOpen)
 
   const fetchWishes = () => {
     ApiInstance.get(`/wishes/wishlist/${wishlistId}`)
@@ -48,42 +34,6 @@ function WishListView (props) {
     ApiInstance.get(`/wishlist/${wishlistId}`)
       .then((res) => {
         setWishlist(res.data.data.wishlist)
-      })
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    ApiInstance.post('/wishes/create', {
-      title: formState.title,
-      description: formState.description,
-      url: formState.url,
-      wishlistId: wishlistId
-    })
-      .then((res) => {
-        console.log('Wish creation:', res)
-        if (imageFile != null) {
-          const formData = new FormData()
-          formData.append('wishId', res.data.data.result.wishId)
-          formData.append('image', imageFile)
-
-          ApiInstance.put('/image/wish/upload', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-          })
-            .then((res) => {
-              console.log('Image upload:', res)
-            })
-        }
-      })
-      .finally(() => {
-        setFormState({
-          title: '',
-          description: '',
-          url: ''
-        })
-        setImageFile(null)
-        handleClose()
-        fetchWishes()
       })
   }
 
@@ -111,96 +61,21 @@ function WishListView (props) {
           variant='contained'
           startIcon={<AddIcon />}
           color='light'
-          onClick={handleOpen}
+          onClick={handleModalToggle}
           sx={{ borderRadius: 5 }}
         >
           Add New Wish
         </Button>
       </Box>
       <WishCardList wishes={wishes} fetchWishes={fetchWishes} />
-      <Modal
-        open={modalOpen}
-        onClose={handleClose}
-        closeAfterTransition
-      >
-        <Paper sx={{ p: 5 }}>
-          <Box component='form' sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Typography variant='h5' sx={{ pb: 3 }}>
-              Add a Wish
-            </Typography>
-            <Box sx={{ display: 'flex', minWidth: '60dvw' }}>
-              <ImageUpload setImageFile={setImageFile} />
-              <Box sx={{ alignItems: 'center', display: 'flex', flexGrow: 1, flexDirection: 'column', flex: 2, ml: 3 }}>
-                <TextField
-                  required
-                  fullWidth
-                  id='title'
-                  label='Title'
-                  name='title'
-                  value={formState.title}
-                  onInput={handleInputChange}
-                  autoFocus
-                />
-                <TextField
-                  fullWidth
-                  id='description'
-                  label='Description'
-                  name='description'
-                  multiline
-                  row={2}
-                  value={formState.description}
-                  onInput={handleInputChange}
-                  sx={{ my: 2 }}
-                />
-                <TextField
-                  fullWidth
-                  id='url'
-                  label='URL'
-                  name='url'
-                  value={formState.url}
-                  onInput={handleInputChange}
-                  sx={{ mb: 2 }}
-                />
-                <Box sx={{ display: 'flex', justifySelf: 'flex-end' }}>
-                  <Button
-                    variant='contained'
-                    onClick={handleSubmit}
-                    sx={{
-                      bgcolor: 'accent.dark',
-                      borderRadius: 5,
-                      mr: 2
-                    }}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    variant='outlined'
-                    onClick={handleClose}
-                    sx={{
-                      color: 'accent.dark',
-                      borderColor: 'accent.dark',
-                      borderRadius: 5
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </Paper>
-      </Modal>
+      <CustomModal
+        wishModal
+        modalOpen={modalOpen}
+        handleModalToggle={handleModalToggle}
+        onSubmit={fetchWishes}
+      />
     </Container>
   )
 }
-
-const Modal = styled(BaseModal)`
-  position: fixed;
-  z-index: 1300;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
 
 export default WishListView

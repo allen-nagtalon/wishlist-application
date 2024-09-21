@@ -32,4 +32,17 @@ public class ImageUtils {
             throw new RuntimeException("Unable to save image!");
         }
     }
+
+    public static void deleteImage(String imageUrl) {
+        String[] splitUrl = imageUrl.split("/");
+        var type = splitUrl[4];
+        var filename = splitUrl[5];
+
+        try {
+            Path fileLocation = Paths.get(PHOTO_DIRECTORY + "/" + type + "/" + filename).toAbsolutePath().normalize();
+            Files.deleteIfExists(fileLocation);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to delete image!");
+        }
+    }
 }

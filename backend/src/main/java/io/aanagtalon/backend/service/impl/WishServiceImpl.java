@@ -57,7 +57,7 @@ public class WishServiceImpl implements WishService {
     public String uploadPhoto(String wishId, MultipartFile file) {
         log.info("Saving photo for wish ID: {}", wishId);
         WishEntity wishEntity = getWishByWishId(wishId);
-        String photoUrl = photoFunction(wishEntity.getWishId(), file, WISH.toString());
+        String photoUrl = photoFunction(wishEntity.getWishId(), file, WISH.label);
         wishEntity.setImageUrl(photoUrl);
         wishRepo.save(wishEntity);
         return photoUrl;

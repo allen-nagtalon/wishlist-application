@@ -2,7 +2,6 @@ package io.aanagtalon.backend.service;
 
 import io.aanagtalon.backend.domain.UserDetailModel;
 import io.aanagtalon.backend.dto.LoginRequest;
-import io.aanagtalon.backend.entity.UserEntity;
 import io.aanagtalon.backend.entity.exception.ApiException;
 import io.aanagtalon.backend.repo.CredentialRepo;
 import io.aanagtalon.backend.repo.UserRepo;
