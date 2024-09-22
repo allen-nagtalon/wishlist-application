@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import WishCardList from '../components/WishCardList/WishCardList'
 import ApiInstance from '../services/ApiInstance'
-import CustomModal from '../components/Modal/Modal'
+import CustomModal from '../components/CustomModal/CustomModal'
 
 function WishListView (props) {
   const navigate = useNavigate()

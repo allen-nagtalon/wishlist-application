@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import ApiInstance from '../services/ApiInstance'
 import defaultGiftIcon from '../assets/default-gift.png'
-import CustomModal from '../components/Modal/Modal'
+import CustomModal from '../components/CustomModal/CustomModal'
 
 function WishlistListView () {
   const [wishlists, setWishlists] = useState(null)
