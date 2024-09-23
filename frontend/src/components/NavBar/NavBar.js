@@ -2,20 +2,20 @@ import { useEffect, useState } from 'react'
 import { Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import ApiInstance from '../../services/ApiInstance'
+import { Link, NavLink } from 'react-router-dom'
 
 const pages = [
   {
     title: 'Dashboard',
-    href: '/'
+    to: '/'
   },
   {
     title: 'My Wishlists',
-    href: '/wishlists'
+    to: '/wishlists'
   }
 ]
 
-function NavBar () {
-  const [user, setUser] = useState(null)
+function NavBar ({ user, setUser }) {
   const [anchorElUser, setAnchorElUser] = useState(null)
 
   const handleOpenUserMenu = (event) => {
@@ -27,17 +27,12 @@ function NavBar () {
   }
 
   const logout = () => {
-    window.localStorage.removeItem('access_token')
+    ApiInstance.defaults.headers.Authorization = ''
     setUser(null)
   }
 
   useEffect(() => {
-    if (window.localStorage.getItem('access_token')) {
-      ApiInstance.get('/user')
-        .then((res) => {
-          setUser(res.data.data.user)
-        })
-    }
+    console.log(user)
   }, [])
 
   return (
@@ -60,13 +55,10 @@ function NavBar () {
 
           <Box sx={{ flexGrow: 0, display: { md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                component='a'
-                href={page.href}
-                key={page.title}
-                sx={{ color: 'text.dark', display: 'block', ml: 3 }}
-              >
-                {page.title}
+              <Button key={page.title} sx={{ color: 'text.dark', ml: 3 }}>
+                <NavLink to={page.to} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  {page.title}
+                </NavLink>
               </Button>
             ))}
           </Box>
@@ -100,8 +92,10 @@ function NavBar () {
               </Box>
             </>
             : <>
-              <Button component='a' href='/login' sx={{ color: 'text.dark', ml: 3 }}>
-                Log In
+              <Button sx={{ color: 'text.dark', ml: 3 }}>
+                <NavLink to='/login' style={{ textDecoration: 'none', color: 'inherit' }}>
+                  Log In
+                </NavLink>
               </Button>
             </>
           }

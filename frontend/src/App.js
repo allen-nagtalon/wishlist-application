@@ -1,40 +1,14 @@
 import NavBar from './components/NavBar/NavBar'
 import Footer from './components/Footer/Footer'
 import { Box, createTheme, CssBaseline, ThemeProvider } from '@mui/material'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Route, Routes } from 'react-router-dom'
 import LandingView from './views/LandingView'
 import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
 import RegisterConfirmView from './views/RegisterConfirmView'
 import WishlistListView from './views/WishlistListView'
 import WishListView from './views/WishListView'
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <LandingView />
-  },
-  {
-    path: '/login',
-    element: <LoginView />
-  },
-  {
-    path: '/register',
-    element: <RegisterView />
-  },
-  {
-    path: '/register/confirm',
-    element: <RegisterConfirmView />
-  },
-  {
-    path: '/wishlists',
-    element: <WishlistListView />
-  },
-  {
-    path: '/wishlists/:wishlistId',
-    element: <WishListView />
-  }
-])
+import { useState } from 'react'
 
 const theme = createTheme({
   palette: {
@@ -70,12 +44,23 @@ const theme = createTheme({
 })
 
 function App () {
+  const [user, setUser] = useState(null)
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <NavBar />
+      <NavBar user={user} setUser={setUser} />
       <Box id='navbar-spacing' sx={{ mt: 10 }} />
-      <RouterProvider router={router} />
+      <div>
+        <Routes>
+          <Route path='/' element={<LandingView />} />
+          <Route path='/login' element={<LoginView setUser={setUser} />} />
+          <Route path='/register' element={<RegisterView />} />
+          <Route path='/register/confirm' element={<RegisterView />} />
+          <Route path='/wishlists' element={<WishlistListView />} />
+          <Route path='/wishlists/:wishlistId' element={<WishListView />} />
+        </Routes>
+      </div>
       <Box id='footer-spacing' sx={{ mb: '50px' }} />
       <Footer />
     </ThemeProvider>
