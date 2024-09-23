@@ -6,7 +6,7 @@ public class Constants {
 
     // Mappings
     public static final String USER_REGISTER = "/user/register";
-    public static final String USER_VERIFY = "/user/verify/account";
+    public static final String USER_VERIFY = "/user/verify/account/**";
     public static final String USER_LOGIN = "/user/login";
 
     public static final String IMAGE_ALL = "/image/**";
