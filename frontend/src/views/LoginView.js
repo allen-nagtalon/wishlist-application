@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ApiInstance from '../services/ApiInstance'
 
-function LoginView ({ setUser }) {
+function LoginView () {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
 
@@ -19,16 +19,10 @@ function LoginView ({ setUser }) {
       }
     )
       .then((res) => {
-        ApiInstance.defaults.headers.Authorization = `JWT ${res.data.data.token}`
+        window.localStorage.setItem('access_token', res.data.data.token)
+        ApiInstance.defaults.headers.Authorization = `JWT ${window.localStorage.getItem('access_token')}`
       })
       .then(navigate('/'))
-      .then(() => {
-        ApiInstance.get('/user')
-          .then((res) => {
-            console.log(res)
-            setUser(res.data.data.user)
-          })
-      })
   }
 
   return (

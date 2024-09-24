@@ -1,14 +1,15 @@
 import NavBar from './components/NavBar/NavBar'
 import Footer from './components/Footer/Footer'
 import { Box, createTheme, CssBaseline, ThemeProvider } from '@mui/material'
-import { createBrowserRouter, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import LandingView from './views/LandingView'
 import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
 import RegisterConfirmView from './views/RegisterConfirmView'
 import WishlistListView from './views/WishlistListView'
 import WishListView from './views/WishListView'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import ApiInstance from './services/ApiInstance'
 
 const theme = createTheme({
   palette: {
@@ -46,6 +47,16 @@ const theme = createTheme({
 function App () {
   const [user, setUser] = useState(null)
 
+  useEffect(() => {
+    if (!user && window.localStorage.getItem('access_token')) {
+      ApiInstance.get('/user')
+        .then((res) => {
+          console.log(res)
+          setUser(res.data.data.user)
+        })
+    }
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -54,9 +65,9 @@ function App () {
       <div>
         <Routes>
           <Route path='/' element={<LandingView />} />
-          <Route path='/login' element={<LoginView setUser={setUser} />} />
+          <Route path='/login' element={<LoginView />} />
           <Route path='/register' element={<RegisterView />} />
-          <Route path='/register/confirm' element={<RegisterView />} />
+          <Route path='/register/confirm' element={<RegisterConfirmView />} />
           <Route path='/wishlists' element={<WishlistListView />} />
           <Route path='/wishlists/:wishlistId' element={<WishListView />} />
         </Routes>

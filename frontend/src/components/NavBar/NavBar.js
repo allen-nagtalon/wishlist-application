@@ -27,13 +27,10 @@ function NavBar ({ user, setUser }) {
   }
 
   const logout = () => {
-    ApiInstance.defaults.headers.Authorization = ''
+    window.localStorage.removeItem('access_token')
+    ApiInstance.defaults.headers.Authorization = null
     setUser(null)
   }
-
-  useEffect(() => {
-    console.log(user)
-  }, [])
 
   return (
     <AppBar id='app-bar' position='fixed' elevation={0} color='light' sx={{ py: 1 }}>
@@ -53,18 +50,17 @@ function NavBar ({ user, setUser }) {
             WISHLIST.IO
           </Typography>
 
-          <Box sx={{ flexGrow: 0, display: { md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button key={page.title} sx={{ color: 'text.dark', ml: 3 }}>
-                <NavLink to={page.to} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  {page.title}
-                </NavLink>
-              </Button>
-            ))}
-          </Box>
-
           {user
             ? <>
+              <Box sx={{ flexGrow: 0, display: { md: 'flex' } }}>
+                {pages.map((page) => (
+                  <Button key={page.title} sx={{ color: 'text.dark', ml: 3 }}>
+                    <NavLink to={page.to} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      {page.title}
+                    </NavLink>
+                  </Button>
+                ))}
+              </Box>
               <Box sx={{ flexGrow: 0, ml: 3 }}>
                 <IconButton onClick={handleOpenUserMenu}>
                   <Avatar src='https://kpopping.com/documents/0f/1/800/240219-XG-Twitter-Update-Jurin-documents-1.jpeg?v=2f72c' />
@@ -95,6 +91,11 @@ function NavBar ({ user, setUser }) {
               <Button sx={{ color: 'text.dark', ml: 3 }}>
                 <NavLink to='/login' style={{ textDecoration: 'none', color: 'inherit' }}>
                   Log In
+                </NavLink>
+              </Button>
+              <Button sx={{ color: 'text.dark', ml: 3 }}>
+                <NavLink to='/register' style={{ textDecoration: 'none', color: 'inherit' }}>
+                  Register
                 </NavLink>
               </Button>
             </>
