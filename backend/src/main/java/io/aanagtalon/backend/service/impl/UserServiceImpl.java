@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 import static io.aanagtalon.backend.utils.UserUtils.createNewEntity;
@@ -54,19 +55,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserEntity> getAllUsers() {
+        return List.of();
+    }
+
+    @Override
+    public UserEntity getUserById(Long id) {
+        return userRepo.findById(id).orElseThrow(() -> new ApiException("User of ID " + id + " could not be found"));
+    }
+
+    @Override
     public UserEntity getUserByUsername(String username) {
-        return userRepo.findByUsername(username).orElseThrow(() -> new ApiException("Username " + username + " could not be found"));
+        return userRepo.findByUsername(username).orElseThrow(() -> new ApiException("User of username " + username + " could not be found"));
     }
 
     @Override
     public UserEntity getUserByEmail(String email) {
-        return userRepo.findByEmailIgnoreCase(email).orElseThrow(() -> new ApiException("Email " + email + " could not be found"));
+        return userRepo.findByEmailIgnoreCase(email).orElseThrow(() -> new ApiException("User of email " + email + " could not be found"));
     }
 
     @Override
     public CredentialEntity getUserCredentialById(Long userId) {
         var credentialById = credentialRepo.getCredentialByUserEntityId(userId);
         return credentialById.orElseThrow(() -> new ApiException("Unable to find user credential"));
+    }
+
+    @Override
+    public void followUserById(Long followerId, Long recipientId) {
+        var follower = getUserById(followerId);
+        var recipient = getUserById(recipientId);
+        recipient.addFollower(follower);
     }
 
     private ConfirmationEntity getUserConfirmation(String key) {

@@ -57,6 +57,21 @@ public class UserResource {
         return ResponseEntity.ok().body(getResponse(request, Map.of("user", user), "User fetched from database", OK));
     }
 
+    @GetMapping("/non-friends")
+    public ResponseEntity<Response> getAllNonFriendedUsers(@RequestHeader(name = "Authorization") String token, HttpServletRequest request) {
+        var id = jwtService.extractUserId(token.substring(4));
+        return ResponseEntity.ok()
+                .body(getResponse(request, emptyMap(), "All users fetched from database", OK));
+    }
+
+    @PutMapping("/follow/{id}")
+    public ResponseEntity<Response> followUserById(@RequestHeader(name = "Authorization") String token, @PathVariable(name = "id") Long recipientId, HttpServletRequest request) {
+        var followerId = jwtService.extractUserId(token.substring(4));
+        userService.followUserById(followerId, recipientId);
+        return ResponseEntity.ok()
+                .body(getResponse(request, emptyMap(), "User of ID " + followerId + " is now following user of ID " + recipientId, OK));
+    }
+
     private URI getUri() {
         return URI.create("");
     }
