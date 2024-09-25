@@ -10,6 +10,7 @@ import WishlistListView from './views/WishlistListView'
 import WishListView from './views/WishListView'
 import { useEffect, useState } from 'react'
 import ApiInstance from './services/ApiInstance'
+import UserSearchView from './views/UserSearchView'
 
 const theme = createTheme({
   palette: {
@@ -25,7 +26,8 @@ const theme = createTheme({
     },
     text: {
       dark: '#261505',
-      light: '#FFFFFF'
+      light: '#FFFFFF',
+      grey: '#81776E'
     },
     misc: {
       bg1: '#FAF9EF'
@@ -70,6 +72,7 @@ function App () {
           <Route path='/register/confirm' element={<RegisterConfirmView />} />
           <Route path='/wishlists' element={<WishlistListView />} />
           <Route path='/wishlists/:wishlistId' element={<WishListView />} />
+          <Route path='/users' element={<UserSearchView />} />
         </Routes>
       </div>
       <Box id='footer-spacing' sx={{ mb: '50px' }} />
