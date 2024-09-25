@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import ApiInstance from '../../services/ApiInstance'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const pages = [
   {
@@ -63,7 +63,7 @@ function NavBar ({ user, setUser }) {
               </Box>
               <Box sx={{ flexGrow: 0, ml: 3 }}>
                 <IconButton onClick={handleOpenUserMenu}>
-                  <Avatar src='https://kpopping.com/documents/0f/1/800/240219-XG-Twitter-Update-Jurin-documents-1.jpeg?v=2f72c' />
+                  <Avatar src={user.imageUrl} />
                 </IconButton>
                 <Menu
                   sx={{ mt: '45px' }}
