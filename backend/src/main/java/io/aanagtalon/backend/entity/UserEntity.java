@@ -57,4 +57,8 @@ public class UserEntity extends Auditable {
     public void addFollower(UserEntity user) {
         this.followers.add(user);
     }
+
+    public void removeFollower(UserEntity user) {
+        this.followers.remove(user);
+    }
 }

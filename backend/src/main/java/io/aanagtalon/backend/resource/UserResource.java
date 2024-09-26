@@ -57,11 +57,11 @@ public class UserResource {
         return ResponseEntity.ok().body(getResponse(request, Map.of("user", user), "User fetched from database", OK));
     }
 
-    @GetMapping("/non-friends")
-    public ResponseEntity<Response> getAllNonFriendedUsers(@RequestHeader(name = "Authorization") String token, HttpServletRequest request) {
+    @GetMapping("/others")
+    public ResponseEntity<Response> getAllUsersExcludingId(@RequestHeader(name = "Authorization") String token, HttpServletRequest request) {
         var id = jwtService.extractUserId(token.substring(4));
         return ResponseEntity.ok()
-                .body(getResponse(request, emptyMap(), "All users fetched from database", OK));
+                .body(getResponse(request, Map.of("userList", userService.getAllUsersExcludingId(id)), "All users fetched from database", OK));
     }
 
     @PutMapping("/follow/{id}")
@@ -70,6 +70,14 @@ public class UserResource {
         userService.followUserById(followerId, recipientId);
         return ResponseEntity.ok()
                 .body(getResponse(request, emptyMap(), "User of ID " + followerId + " is now following user of ID " + recipientId, OK));
+    }
+
+    @PutMapping("/unfollow/{id}")
+    public ResponseEntity<Response> unfollowUserById(@RequestHeader(name = "Authorization") String token, @PathVariable(name = "id") Long recipientId, HttpServletRequest request) {
+        var followerId = jwtService.extractUserId(token.substring(4));
+        userService.unfollowUserById(followerId, recipientId);
+        return ResponseEntity.ok()
+                .body(getResponse(request, emptyMap(), "User of ID " + followerId + " has unfollowed user of ID " + recipientId, OK));
     }
 
     private URI getUri() {

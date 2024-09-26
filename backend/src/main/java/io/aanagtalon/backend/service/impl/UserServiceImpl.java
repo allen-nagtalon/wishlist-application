@@ -55,8 +55,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> getAllUsers() {
-        return List.of();
+    public List<UserEntity> getAllUsersExcludingId(Long id) {
+        return userRepo.getAllUsersJoinedWithFollowStatus(id);
     }
 
     @Override
@@ -85,6 +85,13 @@ public class UserServiceImpl implements UserService {
         var follower = getUserById(followerId);
         var recipient = getUserById(recipientId);
         recipient.addFollower(follower);
+    }
+
+    @Override
+    public void unfollowUserById(Long followerId, Long recipientId) {
+        var follower = getUserById(followerId);
+        var recipient = getUserById(recipientId);
+        recipient.removeFollower(follower);
     }
 
     private ConfirmationEntity getUserConfirmation(String key) {
